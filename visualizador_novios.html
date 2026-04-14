@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard · Experiencia Novios · Tinto</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Quicksand',sans-serif;background:#f0f0f0;color:#222;min-height:100vh}
+
+/* Header */
+.hdr{background:#2a2a2a;color:#fff;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.hdr-left h1{font-family:'Cinzel',serif;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase;color:#f0f0f0}
+.hdr-left p{font-size:.76rem;color:#aaa;margin-top:3px;letter-spacing:1px}
+
+/* Filtros */
+.filters{background:#fff;border-bottom:2px solid #e0e0e0;padding:14px 28px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.filter-group{display:flex;align-items:center;gap:7px}
+.filter-group label{font-size:.8rem;font-weight:700;color:#555;white-space:nowrap}
+.filter-group select,.filter-group input[type=date]{padding:7px 12px;border:1.5px solid #ddd;border-radius:6px;font-family:'Quicksand',sans-serif;font-size:.82rem;background:#fafafa;cursor:pointer}
+.filter-group input[type=date]{width:140px}
+.btn-filter{padding:7px 18px;background:#2a2a2a;color:#fff;border:none;border-radius:6px;font-family:'Quicksand',sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;transition:background .15s;letter-spacing:.5px}
+.btn-filter:hover{background:#444}
+.btn-filter.sec{background:#f0f0f0;color:#333;border:1.5px solid #ccc}
+.btn-filter.sec:hover{background:#e0e0e0}
+.filter-tag{padding:4px 10px;background:#2a2a2a;color:#fff;border-radius:20px;font-size:.74rem;display:flex;align-items:center;gap:5px}
+.filter-tag span{cursor:pointer;opacity:.7}
+.filter-tag span:hover{opacity:1}
+
+/* Layout */
+.main{max-width:1280px;margin:0 auto;padding:24px 20px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:20px}
+.grid-1{margin-bottom:20px}
+@media(max-width:900px){.grid-3{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}}
+@media(max-width:580px){.grid-3{grid-template-columns:1fr}}
+
+/* Cards */
+.card{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.1);overflow:hidden}
+.card-hdr{padding:13px 18px;font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;color:#fff;display:flex;align-items:center;justify-content:space-between}
+.card-body{padding:18px}
+.c-dark {background:#2a2a2a}
+.c-rc   {background:#34495e}
+.c-dec  {background:#1a6b3a}
+.c-food {background:#b7410e}
+.c-bar  {background:#1a3a6b}
+.c-gold {background:#7d6608}
+
+/* KPI */
+.kpi{text-align:center;padding:20px 12px}
+.kpi-val{font-family:'Cinzel',serif;font-size:2.6rem;font-weight:700;line-height:1;margin-bottom:6px}
+.kpi-lbl{font-size:.78rem;color:#666;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.kpi-sub{font-size:.72rem;color:#aaa;margin-top:4px}
+.badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:.7rem;font-weight:700;margin-top:6px}
+.badge-good{background:#d4edda;color:#155724}
+.badge-ok  {background:#fff3cd;color:#856404}
+.badge-bad {background:#f8d7da;color:#721c24}
+
+/* Gauge bar */
+.gauge-wrap{margin-top:10px}
+.gauge-track{height:8px;background:#e9e9e9;border-radius:4px;overflow:hidden;margin-top:4px}
+.gauge-fill {height:100%;border-radius:4px;transition:width .6s ease}
+
+/* Score bar list */
+.score-list{display:flex;flex-direction:column;gap:10px}
+.score-item{display:flex;align-items:center;gap:10px;font-size:.83rem}
+.score-item-lbl{flex:0 0 170px;font-weight:600;color:#444;font-size:.8rem}
+.score-item-bar{flex:1;height:10px;background:#e9e9e9;border-radius:5px;overflow:hidden}
+.score-item-fill{height:100%;border-radius:5px;transition:width .5s ease}
+.score-item-val{flex:0 0 36px;text-align:right;font-weight:700;font-size:.82rem;color:#333}
+
+/* Chart container */
+.chart-wrap{position:relative;padding:0 6px 6px}
+.chart-wrap canvas{max-height:280px}
+
+/* Table */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+thead tr th{background:#2a2a2a;color:#fff;padding:9px 12px;text-align:center;font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:1px;white-space:nowrap;position:sticky;top:0}
+tbody tr:nth-child(even){background:#f9f9f9}
+tbody tr:hover{background:#f0f4ff}
+tbody td{padding:8px 12px;border-bottom:1px solid #eee;text-align:center;vertical-align:middle;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tbody td.td-name{text-align:left;font-weight:600;max-width:180px}
+tbody td.td-comment{text-align:left;white-space:normal;font-size:.75rem;color:#555;max-width:240px}
+.pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.72rem;font-weight:700}
+.pill-7{background:#155724;color:#fff}
+.pill-6{background:#d4edda;color:#155724}
+.pill-5{background:#fff3cd;color:#856404}
+.pill-low{background:#f8d7da;color:#721c24}
+
+/* Empty state */
+.empty{text-align:center;padding:60px 20px;color:#aaa}
+.empty-icon{font-size:3rem;margin-bottom:12px}
+.empty p{font-size:.9rem}
+
+/* Loader */
+.loader{display:flex;align-items:center;justify-content:center;padding:60px;flex-direction:column;gap:14px;color:#aaa}
+.spinner{width:36px;height:36px;border:4px solid #e0e0e0;border-top-color:#2a2a2a;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Comments panel */
+.comments-list{display:flex;flex-direction:column;gap:10px;max-height:340px;overflow-y:auto}
+.comment-item{background:#fafafa;border-left:3px solid #ccc;padding:10px 12px;border-radius:0 6px 6px 0;font-size:.8rem;color:#444;line-height:1.6}
+.comment-item .c-meta{font-size:.72rem;color:#aaa;margin-bottom:4px;display:flex;gap:8px;flex-wrap:wrap}
+.comment-item.c-rc   {border-left-color:#34495e}
+.comment-item.c-dec  {border-left-color:#1a6b3a}
+.comment-item.c-food {border-left-color:#b7410e}
+.comment-item.c-bar  {border-left-color:#1a3a6b}
+.comment-item.c-imp  {border-left-color:#c0392b}
+
+/* Trend section */
+.section-label{font-family:'Cinzel',serif;font-size:.82rem;letter-spacing:1.5px;text-transform:uppercase;color:#666;padding:6px 0 14px;border-bottom:2px solid #e0e0e0;margin-bottom:16px}
+
+/* Alert */
+.alert-box{background:#fef9e7;border:1.5px solid #f0c040;border-radius:8px;padding:12px 16px;font-size:.82rem;color:#7d6608;line-height:1.6;margin-bottom:16px}
+
+/* Responsive canvas */
+canvas{width:100%!important}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-left">
+    <h1>Experiencia Tinto · Dashboard Novios</h1>
+    <p id="hdr-sub">Cargando datos…</p>
+  </div>
+  <button class="btn-filter" onclick="location.reload()">↺ Actualizar</button>
+</div>
+
+<!-- FILTROS -->
+<div class="filters">
+  <div class="filter-group">
+    <label>Período rápido:</label>
+    <select id="quick-period" onchange="onQuickPeriod()">
+      <option value="">— Selecciona —</option>
+      <option value="7d">Última semana</option>
+      <option value="1m">Último mes</option>
+      <option value="3m">Últimos 3 meses</option>
+      <option value="6m">Últimos 6 meses</option>
+      <option value="1y">Este año</option>
+      <option value="all">Todo el historial</option>
+    </select>
+  </div>
+  <div class="filter-group">
+    <label>Desde:</label>
+    <input type="date" id="f-from">
+  </div>
+  <div class="filter-group">
+    <label>Hasta:</label>
+    <input type="date" id="f-to">
+  </div>
+  <div class="filter-group">
+    <label>Centro:</label>
+    <select id="f-centro"><option value="">Todos</option></select>
+  </div>
+  <button class="btn-filter" onclick="applyFilters()">Aplicar filtros</button>
+  <button class="btn-filter sec" onclick="clearFilters()">Limpiar</button>
+  <div id="active-filters" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+</div>
+
+<div class="main" id="main-content">
+  <div class="loader" id="loader">
+    <div class="spinner"></div>
+    <span>Cargando evaluaciones…</span>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  DATA & STATE
+// ═══════════════════════════════════════════════════════════
+let _allData = [];
+let _filtered = [];
+let _chartRefs = {};
+
+const SEC_COLORS = {
+  rc:   '#34495e', dec: '#1a6b3a', food: '#b7410e',
+  bar:  '#1a3a6b', global: '#2a2a2a'
+};
+
+// ── Load data from AppScript ─────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  if (typeof google !== 'undefined' && google.script) {
+    google.script.run
+      .withSuccessHandler(raw => {
+        _allData = raw || [];
+        populateCentros();
+        applyFilters();
+      })
+      .withFailureHandler(err => {
+        document.getElementById('loader').innerHTML =
+          `<div class="empty"><div class="empty-icon">⚠</div><p>Error al cargar datos: ${err.message}</p></div>`;
+      })
+      .getRespuestasNovios();
+  } else {
+    // ── Dev mock data ──────────────────────────────────────
+    _allData = generateMockData(42);
+    populateCentros();
+    applyFilters();
+  }
+});
+
+function generateMockData(n) {
+  const centros = ['Casa de Campo','El Oliveto','La Viña del Mar','Hacienda El Roble','Casa Piedra'];
+  const data = [];
+  const now = new Date();
+  for (let i = 0; i < n; i++) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - Math.floor(Math.random() * 365));
+    const centro = centros[Math.floor(Math.random() * centros.length)];
+    const quality = 4.5 + Math.random() * 2.5;
+    const r = v => Math.min(7, Math.max(1, Math.round(quality + (Math.random()-.5)*2)));
+    const scores = {
+      rc_comunicacion: r(), rc_respuestas: r(), rc_coordinacion: r(),
+      rc_flexibilidad: r(), rc_cotizacion: r(), rc_degustacion: r(),
+      dec_calidad: r(), dec_capacidad: r(), dec_cumplimiento: r(),
+      dec_flexibilidad: r(), dec_planimetria: r(),
+      comida: r(), barra: r()
+    };
+    const comments = [
+      'Todo excelente, muy contentos con el servicio.',
+      'La comida estuvo deliciosa, igual a la degustación.',
+      'Mejorar los tiempos del primer tiempo.',
+      'El equipo fue muy atento y profesional.',
+      'Quedamos encantados con la decoración.',
+      ''
+    ];
+    data.push({
+      timestamp: d.toISOString(),
+      novios: `Pareja ${i+1}`,
+      centro,
+      fecha: d.toISOString().slice(0,10),
+      ...scores,
+      rc_comentario: comments[i%comments.length],
+      dec_comentario: comments[(i+1)%comments.length],
+      comida_comentario: comments[(i+2)%comments.length],
+      barra_comentario: comments[(i+3)%comments.length],
+      mejoras: i % 4 === 0 ? 'Mejorar comunicación post-evento.' : (i%3===0?'Nada, todo perfecto!':''),
+    });
+  }
+  return data.sort((a,b) => b.timestamp.localeCompare(a.timestamp));
+}
+
+// ── Centros ──────────────────────────────────────────────────
+function populateCentros() {
+  const sel = document.getElementById('f-centro');
+  const centros = [...new Set(_allData.map(d => d.centro).filter(Boolean))].sort();
+  centros.forEach(c => {
+    const o = document.createElement('option');
+    o.value = c; o.textContent = c;
+    sel.appendChild(o);
+  });
+}
+
+// ── Quick period ─────────────────────────────────────────────
+function onQuickPeriod() {
+  const val = document.getElementById('quick-period').value;
+  const now = new Date();
+  let from = null;
+  if      (val === '7d')  { from = new Date(now); from.setDate(from.getDate()-7); }
+  else if (val === '1m')  { from = new Date(now); from.setMonth(from.getMonth()-1); }
+  else if (val === '3m')  { from = new Date(now); from.setMonth(from.getMonth()-3); }
+  else if (val === '6m')  { from = new Date(now); from.setMonth(from.getMonth()-6); }
+  else if (val === '1y')  { from = new Date(now.getFullYear(),0,1); }
+  else if (val === 'all') { from = null; }
+
+  document.getElementById('f-from').value = from ? from.toISOString().slice(0,10) : '';
+  document.getElementById('f-to').value   = val === 'all' ? '' : now.toISOString().slice(0,10);
+  if (val) applyFilters();
+}
+
+// ── Filters ──────────────────────────────────────────────────
+function applyFilters() {
+  const from   = document.getElementById('f-from').value;
+  const to     = document.getElementById('f-to').value;
+  const centro = document.getElementById('f-centro').value;
+
+  _filtered = _allData.filter(d => {
+    const fecha = (d.fecha || d.timestamp || '').slice(0,10);
+    if (from && fecha < from) return false;
+    if (to   && fecha > to)   return false;
+    if (centro && d.centro !== centro) return false;
+    return true;
+  });
+
+  updateActiveFilters(from, to, centro);
+  renderDashboard();
+}
+
+function clearFilters() {
+  document.getElementById('f-from').value = '';
+  document.getElementById('f-to').value   = '';
+  document.getElementById('f-centro').value = '';
+  document.getElementById('quick-period').value = '';
+  _filtered = [..._allData];
+  updateActiveFilters('','','');
+  renderDashboard();
+}
+
+function updateActiveFilters(from, to, centro) {
+  const el = document.getElementById('active-filters');
+  el.innerHTML = '';
+  if (from) el.innerHTML += `<div class="filter-tag">Desde: ${from}<span onclick="document.getElementById('f-from').value='';applyFilters()">✕</span></div>`;
+  if (to)   el.innerHTML += `<div class="filter-tag">Hasta: ${to}<span onclick="document.getElementById('f-to').value='';applyFilters()">✕</span></div>`;
+  if (centro) el.innerHTML += `<div class="filter-tag">${centro}<span onclick="document.getElementById('f-centro').value='';applyFilters()">✕</span></div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  COMPUTE METRICS
+// ═══════════════════════════════════════════════════════════
+function avg(arr, key) {
+  const vals = arr.map(d => d[key]).filter(v => typeof v === 'number' && !isNaN(v));
+  return vals.length ? vals.reduce((s,v)=>s+v,0)/vals.length : null;
+}
+function avgMulti(arr, keys) {
+  const all = [];
+  arr.forEach(d => keys.forEach(k => { if(typeof d[k]==='number') all.push(d[k]); }));
+  return all.length ? all.reduce((s,v)=>s+v,0)/all.length : null;
+}
+function fmt(v) { return v===null?'—':v.toFixed(1); }
+function pct(v) { return v===null?0:Math.round((v/7)*100); }
+function badgeClass(v) {
+  if (v===null) return '';
+  if (v >= 6) return 'badge-good';
+  if (v >= 4) return 'badge-ok';
+  return 'badge-bad';
+}
+function badgeLabel(v) {
+  if (v===null) return '—';
+  if (v >= 6) return '✓ Excelente';
+  if (v >= 5) return '~ Bueno';
+  if (v >= 4) return '~ Regular';
+  return '✗ Por mejorar';
+}
+function pillClass(v) {
+  if (!v || isNaN(v)) return '';
+  if (v>=7) return 'pill-7';
+  if (v>=6) return 'pill-6';
+  if (v>=5) return 'pill-5';
+  return 'pill-low';
+}
+function fillColor(pct, hex) {
+  return hex;
+}
+
+const RC_KEYS   = ['rc_comunicacion','rc_respuestas','rc_coordinacion','rc_flexibilidad','rc_cotizacion','rc_degustacion'];
+const DEC_KEYS  = ['dec_calidad','dec_capacidad','dec_cumplimiento','dec_flexibilidad','dec_planimetria'];
+const FOOD_KEYS = ['comida'];
+const BAR_KEYS  = ['barra'];
+const ALL_KEYS  = [...RC_KEYS,...DEC_KEYS,...FOOD_KEYS,...BAR_KEYS];
+
+// ═══════════════════════════════════════════════════════════
+//  RENDER DASHBOARD
+// ═══════════════════════════════════════════════════════════
+function renderDashboard() {
+  const d = _filtered;
+  const n = d.length;
+
+  document.getElementById('hdr-sub').textContent =
+    `${n} evaluación${n!==1?'es':''} · ${_allData.length} total histórico`;
+
+  const rc   = avgMulti(d, RC_KEYS);
+  const dec  = avgMulti(d, DEC_KEYS);
+  const food = avg(d, 'comida');
+  const bar  = avg(d, 'barra');
+  const all  = avgMulti(d, ALL_KEYS);
+
+  // Destroy old charts
+  Object.values(_chartRefs).forEach(c => c?.destroy?.());
+  _chartRefs = {};
+
+  if (n === 0) {
+    document.getElementById('main-content').innerHTML = `
+      <div class="empty"><div class="empty-icon">📊</div>
+      <p>No hay evaluaciones para el período seleccionado.</p></div>`;
+    return;
+  }
+
+  const html = `
+    <!-- ── KPIs ── -->
+    <p class="section-label">Resumen General · ${n} evaluación${n!==1?'es':''}</p>
+    ${renderAlert(d)}
+    <div class="grid-3" style="grid-template-columns:repeat(5,1fr)">
+      ${kpiCard('Promedio Global', all, 'c-dark', 'Todas las categorías')}
+      ${kpiCard('Relación Comercial', rc, 'c-rc', 'Q2 – Q7')}
+      ${kpiCard('Decoración', dec, 'c-dec', 'Q9 – Q13')}
+      ${kpiCard('Comida', food, 'c-food', 'Q15')}
+      ${kpiCard('Servicio & Barra', bar, 'c-bar', 'Q17')}
+    </div>
+
+    <!-- ── Desglose por categoría ── -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-hdr c-dark">Desglose por Categoría</div>
+        <div class="card-body">
+          ${renderScoreList(d)}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr c-dark">Radar · Categorías</div>
+        <div class="card-body chart-wrap">
+          <canvas id="chartRadar"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Distribución de notas ── -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-hdr c-rc">Distribución de Notas · Relación Comercial</div>
+        <div class="card-body chart-wrap"><canvas id="chartDistRC"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr c-dec">Distribución de Notas · Decoración</div>
+        <div class="card-body chart-wrap"><canvas id="chartDistDec"></canvas></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-hdr c-food">Distribución de Notas · Comida</div>
+        <div class="card-body chart-wrap"><canvas id="chartDistFood"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr c-bar">Distribución de Notas · Servicio & Barra</div>
+        <div class="card-body chart-wrap"><canvas id="chartDistBar"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ── Tendencia mensual ── -->
+    <div class="grid-1">
+      <div class="card">
+        <div class="card-hdr c-dark">Tendencia Mensual · Promedios por Categoría</div>
+        <div class="card-body chart-wrap" style="padding:12px 8px">
+          <canvas id="chartTrend" style="max-height:300px"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Por Centro ── -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-hdr c-dark">Promedio Global por Centro</div>
+        <div class="card-body chart-wrap"><canvas id="chartCentro"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-hdr c-dark">Respuestas por Centro</div>
+        <div class="card-body chart-wrap"><canvas id="chartPie"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ── Últimas evaluaciones ── -->
+    <div class="grid-1">
+      <div class="card">
+        <div class="card-hdr c-dark">Últimas Evaluaciones</div>
+        <div class="card-body">
+          ${renderTable(d.slice(0,20))}
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Comentarios ── -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-hdr c-dark">Últimos Comentarios & Sugerencias de Mejora</div>
+        <div class="card-body">${renderComments(d, 'mejoras', 'c-imp', 'Q19')}</div>
+      </div>
+      <div class="card">
+        <div class="card-hdr c-dark">Comentarios Destacados por Categoría</div>
+        <div class="card-body">${renderMixedComments(d)}</div>
+      </div>
+    </div>
+  `;
+
+  const mc = document.getElementById('main-content');
+  mc.innerHTML = html;
+
+  // Build charts after DOM ready
+  setTimeout(() => {
+    buildRadar(d, rc, dec, food, bar);
+    buildDist('chartDistRC',  d, RC_KEYS,   SEC_COLORS.rc);
+    buildDist('chartDistDec', d, DEC_KEYS,  SEC_COLORS.dec);
+    buildDist('chartDistFood',d, FOOD_KEYS, SEC_COLORS.food);
+    buildDist('chartDistBar', d, BAR_KEYS,  SEC_COLORS.bar);
+    buildTrend(d);
+    buildCentroBar(d);
+    buildCentroPie(d);
+  }, 60);
+}
+
+// ── Alert: low scores ────────────────────────────────────────
+function renderAlert(d) {
+  const concerns = [];
+  const checks = {
+    'Comunicación': avgMulti(d,['rc_comunicacion']),
+    'Respuestas rápidas': avgMulti(d,['rc_respuestas']),
+    'Comida': avg(d,'comida'),
+    'Servicio & Barra': avg(d,'barra'),
+    'Calidad Decoración': avgMulti(d,['dec_calidad']),
+    'Planimetría': avgMulti(d,['dec_planimetria']),
+  };
+  Object.entries(checks).forEach(([k,v]) => { if(v!==null && v<5) concerns.push(`${k}: ${fmt(v)}`); });
+  if (!concerns.length) return '';
+  return `<div class="alert-box">⚠ <strong>Áreas bajo el umbral (< 5):</strong> ${concerns.join(' · ')} — Se recomienda revisar comentarios y tomar acciones correctivas.</div>`;
+}
+
+// ── KPI card ─────────────────────────────────────────────────
+function kpiCard(label, val, cls, sub) {
+  const p = pct(val);
+  return `
+  <div class="card">
+    <div class="card-hdr ${cls}">${label}</div>
+    <div class="card-body kpi">
+      <div class="kpi-val" style="color:${val===null?'#aaa':(val>=6?'#155724':val>=4?'#856404':'#721c24')}">${fmt(val)}</div>
+      <div class="kpi-lbl">/ 7.0</div>
+      <div class="kpi-sub">${sub}</div>
+      <span class="badge ${badgeClass(val)}">${badgeLabel(val)}</span>
+      <div class="gauge-wrap">
+        <div class="gauge-track"><div class="gauge-fill" style="width:${p}%;background:${val>=6?'#28a745':val>=4?'#ffc107':'#dc3545'}"></div></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── Score list ───────────────────────────────────────────────
+function renderScoreList(d) {
+  const items = [
+    {label:'Comunicación planificación',  val: avg(d,'rc_comunicacion'),   color: SEC_COLORS.rc},
+    {label:'Respuestas rápidas',           val: avg(d,'rc_respuestas'),     color: SEC_COLORS.rc},
+    {label:'Coordinación detalles',        val: avg(d,'rc_coordinacion'),   color: SEC_COLORS.rc},
+    {label:'Flexibilidad servicios',       val: avg(d,'rc_flexibilidad'),   color: SEC_COLORS.rc},
+    {label:'Experiencia cotización',       val: avg(d,'rc_cotizacion'),     color: SEC_COLORS.rc},
+    {label:'Proceso degustación',          val: avg(d,'rc_degustacion'),    color: SEC_COLORS.rc},
+    {label:'Calidad decoración',           val: avg(d,'dec_calidad'),       color: SEC_COLORS.dec},
+    {label:'Escucha en decoración',        val: avg(d,'dec_capacidad'),     color: SEC_COLORS.dec},
+    {label:'Cumplimiento decoración',      val: avg(d,'dec_cumplimiento'),  color: SEC_COLORS.dec},
+    {label:'Flexibilidad decoración',      val: avg(d,'dec_flexibilidad'),  color: SEC_COLORS.dec},
+    {label:'Planimetría',                  val: avg(d,'dec_planimetria'),   color: SEC_COLORS.dec},
+    {label:'Comida (cóctel→bajón)',        val: avg(d,'comida'),            color: SEC_COLORS.food},
+    {label:'Servicio & Barra',             val: avg(d,'barra'),             color: SEC_COLORS.bar},
+  ];
+  return `<div class="score-list">${items.map(it => `
+    <div class="score-item">
+      <span class="score-item-lbl">${it.label}</span>
+      <div class="score-item-bar">
+        <div class="score-item-fill" style="width:${pct(it.val)}%;background:${it.color}"></div>
+      </div>
+      <span class="score-item-val">${fmt(it.val)}</span>
+    </div>`).join('')}</div>`;
+}
+
+// ── Table ────────────────────────────────────────────────────
+function renderTable(d) {
+  if (!d.length) return '<div class="empty"><p>Sin datos</p></div>';
+  const rows = d.map(row => {
+    const g = k => (typeof row[k]==='number'?row[k]:null);
+    const allV = ALL_KEYS.map(k=>g(k)).filter(v=>v!==null);
+    const prom = allV.length ? (allV.reduce((s,v)=>s+v,0)/allV.length).toFixed(1) : '—';
+    return `<tr>
+      <td class="td-name">${row.novios||'—'}</td>
+      <td>${row.centro||'—'}</td>
+      <td>${(row.fecha||'').slice(0,10)}</td>
+      <td><span class="pill ${pillClass(g('rc_comunicacion')+(g('rc_respuestas')||0))}">${fmt(avgMulti([row],RC_KEYS))}</span></td>
+      <td><span class="pill ${pillClass(g('dec_calidad'))}">${fmt(avgMulti([row],DEC_KEYS))}</span></td>
+      <td><span class="pill ${pillClass(g('comida'))}">${fmt(g('comida'))}</span></td>
+      <td><span class="pill ${pillClass(g('barra'))}">${fmt(g('barra'))}</span></td>
+      <td><strong><span class="pill ${pillClass(parseFloat(prom))}">${prom}</span></strong></td>
+    </tr>`;
+  }).join('');
+  return `<div class="tbl-wrap"><table>
+    <thead><tr>
+      <th>Novios</th><th>Centro</th><th>Fecha</th>
+      <th>Rel. Com.</th><th>Decoración</th><th>Comida</th><th>Barra</th><th>Global</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table></div>`;
+}
+
+// ── Comments ─────────────────────────────────────────────────
+function renderComments(d, key, cls, label) {
+  const items = d.filter(r => r[key] && r[key].trim()).slice(0,12);
+  if (!items.length) return '<p style="color:#aaa;font-size:.82rem">Sin comentarios en el período.</p>';
+  return `<div class="comments-list">${items.map(r => `
+    <div class="comment-item ${cls}">
+      <div class="c-meta"><span><strong>${r.novios||'—'}</strong></span><span>${(r.fecha||'').slice(0,10)}</span><span>${r.centro||''}</span></div>
+      <div>${r[key]}</div>
+    </div>`).join('')}</div>`;
+}
+
+function renderMixedComments(d) {
+  const pool = [];
+  const map = [
+    {key:'rc_comentario',    cls:'c-rc',   cat:'Rel. Comercial'},
+    {key:'dec_comentario',   cls:'c-dec',  cat:'Decoración'},
+    {key:'comida_comentario',cls:'c-food', cat:'Comida'},
+    {key:'barra_comentario', cls:'c-bar',  cat:'Barra'},
+  ];
+  d.forEach(r => map.forEach(m => {
+    if (r[m.key] && r[m.key].trim()) pool.push({...m, text:r[m.key], novios:r.novios, fecha:r.fecha, centro:r.centro});
+  }));
+  const recent = pool.slice(0,14);
+  if (!recent.length) return '<p style="color:#aaa;font-size:.82rem">Sin comentarios.</p>';
+  return `<div class="comments-list">${recent.map(c => `
+    <div class="comment-item ${c.cls}">
+      <div class="c-meta"><span><strong>${c.cat}</strong></span><span>${c.novios||'—'}</span><span>${(c.fecha||'').slice(0,10)}</span></div>
+      <div>${c.text}</div>
+    </div>`).join('')}</div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  CHARTS
+// ═══════════════════════════════════════════════════════════
+const CHART_DEFAULTS = {
+  plugins:{legend:{labels:{font:{family:'Quicksand',size:11},boxWidth:12}}},
+  scales:{},
+};
+
+function buildRadar(d, rc, dec, food, bar) {
+  const ctx = document.getElementById('chartRadar')?.getContext('2d');
+  if (!ctx) return;
+  _chartRefs.radar = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['Rel. Comercial','Decoración','Comida','Servicio & Barra'],
+      datasets: [{
+        label: 'Promedio',
+        data: [rc,dec,food,bar].map(v=>v??0),
+        borderColor: '#2a2a2a', backgroundColor: 'rgba(42,42,42,.12)',
+        pointBackgroundColor: '#2a2a2a', borderWidth: 2, pointRadius: 4
+      }]
+    },
+    options: {
+      responsive:true,
+      scales:{r:{min:0,max:7,ticks:{stepSize:1,font:{size:10}},pointLabels:{font:{size:11,family:'Quicksand'}}}},
+      plugins:{legend:{display:false}}
+    }
+  });
+}
+
+function buildDist(id, d, keys, color) {
+  const ctx = document.getElementById(id)?.getContext('2d');
+  if (!ctx) return;
+  const counts = {1:0,2:0,3:0,4:0,5:0,6:0,7:0};
+  d.forEach(row => keys.forEach(k => { const v=row[k]; if(v>=1&&v<=7) counts[v]++; }));
+  const labels = ['1','2','3','4','5','6','7'];
+  const vals   = labels.map(l=>counts[parseInt(l)]);
+  const total  = vals.reduce((s,v)=>s+v,0);
+  _chartRefs[id] = new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels,
+      datasets:[{data:vals,backgroundColor:labels.map(l=>parseInt(l)>=6?color+'cc':parseInt(l)>=4?color+'77':color+'44'),borderRadius:4,borderSkipped:false}]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw} respuesta${c.raw!==1?'s':''} (${total?Math.round(c.raw/total*100):0}%)`}}},
+      scales:{y:{beginAtZero:true,ticks:{stepSize:1,font:{size:10}}},x:{ticks:{font:{size:11}}}}
+    }
+  });
+}
+
+function buildTrend(d) {
+  const ctx = document.getElementById('chartTrend')?.getContext('2d');
+  if (!ctx) return;
+
+  // Group by month
+  const months = {};
+  d.forEach(row => {
+    const fecha = (row.fecha||row.timestamp||'').slice(0,7); // YYYY-MM
+    if (!fecha) return;
+    if (!months[fecha]) months[fecha] = {rc:[],dec:[],food:[],bar:[]};
+    const rcV = avgMulti([row],RC_KEYS); if(rcV!==null) months[fecha].rc.push(rcV);
+    const dV  = avgMulti([row],DEC_KEYS); if(dV!==null) months[fecha].dec.push(dV);
+    const fV  = avg([row],'comida'); if(fV!==null) months[fecha].food.push(fV);
+    const bV  = avg([row],'barra'); if(bV!==null) months[fecha].bar.push(bV);
+  });
+
+  const labels = Object.keys(months).sort();
+  const mean = arr => arr.length ? arr.reduce((s,v)=>s+v,0)/arr.length : null;
+
+  _chartRefs.trend = new Chart(ctx, {
+    type:'line',
+    data:{
+      labels: labels.map(l=>{const[y,m]=l.split('-');return `${['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][parseInt(m)-1]} ${y}`}),
+      datasets:[
+        {label:'Rel. Comercial', data:labels.map(l=>mean(months[l].rc)),  borderColor:SEC_COLORS.rc,   backgroundColor:SEC_COLORS.rc+'22',  tension:.35,fill:false,pointRadius:4,borderWidth:2},
+        {label:'Decoración',     data:labels.map(l=>mean(months[l].dec)), borderColor:SEC_COLORS.dec,  backgroundColor:SEC_COLORS.dec+'22', tension:.35,fill:false,pointRadius:4,borderWidth:2},
+        {label:'Comida',         data:labels.map(l=>mean(months[l].food)),borderColor:SEC_COLORS.food, backgroundColor:SEC_COLORS.food+'22',tension:.35,fill:false,pointRadius:4,borderWidth:2},
+        {label:'Servicio & Barra',data:labels.map(l=>mean(months[l].bar)),borderColor:SEC_COLORS.bar,  backgroundColor:SEC_COLORS.bar+'22', tension:.35,fill:false,pointRadius:4,borderWidth:2},
+      ]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{labels:{font:{family:'Quicksand',size:11},boxWidth:12}}},
+      scales:{
+        y:{min:1,max:7,ticks:{stepSize:1,font:{size:10}},grid:{color:'#f0f0f0'}},
+        x:{ticks:{font:{size:10}},grid:{color:'#f0f0f0'}}
+      }
+    }
+  });
+}
+
+function buildCentroBar(d) {
+  const ctx = document.getElementById('chartCentro')?.getContext('2d');
+  if (!ctx) return;
+  const centros = {};
+  d.forEach(row => {
+    const c = row.centro || 'Desconocido';
+    if (!centros[c]) centros[c] = [];
+    const v = avgMulti([row], ALL_KEYS);
+    if (v!==null) centros[c].push(v);
+  });
+  const labels = Object.keys(centros).sort();
+  const vals   = labels.map(c => { const a=centros[c]; return a.length?a.reduce((s,v)=>s+v,0)/a.length:null; });
+  const colors = vals.map(v => !v?'#ccc':v>=6?'#28a745':v>=4?'#ffc107':'#dc3545');
+
+  _chartRefs.centro = new Chart(ctx, {
+    type:'bar',
+    data:{labels, datasets:[{data:vals.map(v=>v??0),backgroundColor:colors,borderRadius:5,borderSkipped:false}]},
+    options:{
+      indexAxis:'y',responsive:true,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`Promedio: ${c.raw.toFixed(1)}`}}},
+      scales:{x:{min:0,max:7,ticks:{stepSize:1,font:{size:10}}},y:{ticks:{font:{size:11}}}}
+    }
+  });
+}
+
+function buildCentroPie(d) {
+  const ctx = document.getElementById('chartPie')?.getContext('2d');
+  if (!ctx) return;
+  const centros = {};
+  d.forEach(row => { const c=row.centro||'Desconocido'; centros[c]=(centros[c]||0)+1; });
+  const labels = Object.keys(centros).sort();
+  const palette = ['#2a2a2a','#34495e','#1a6b3a','#b7410e','#1a3a6b','#7d6608','#6c3483','#117a65'];
+  _chartRefs.pie = new Chart(ctx, {
+    type:'doughnut',
+    data:{labels, datasets:[{data:labels.map(l=>centros[l]), backgroundColor:palette.slice(0,labels.length), borderWidth:2, borderColor:'#fff'}]},
+    options:{
+      responsive:true,
+      plugins:{legend:{position:'bottom',labels:{font:{family:'Quicksand',size:11},boxWidth:12}},
+        tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw} (${Math.round(c.raw/d.length*100)}%)`}}}
+    }
+  });
+}
+</script>
+</body>
+</html>
