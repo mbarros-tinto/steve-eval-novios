@@ -324,25 +324,26 @@
 </div>
 
 <script>
+// ═══════════════════════════════════════════════════════════════════
+//  API — Apps Script JSON endpoint
+//  Al crear una nueva implementación reemplazar solo esta constante.
+// ═══════════════════════════════════════════════════════════════════
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAiqCVrr96pQ21JiVaB1HOWQr76--7Vian-mgqyG_DlLp-ZjxVuF878bP6BEUSbmKm/exec';
+
 // ── Aux: centros ─────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
-  if (typeof google !== 'undefined' && google.script) {
-    google.script.run
-      .withSuccessHandler(data => {
-        const centroSel = document.getElementById('centro');
-        centroSel.innerHTML = '<option value="">— Selecciona un centro —</option>';
-        (data.centros || []).forEach(c => {
-          const o = document.createElement('option');
-          o.value = c; o.textContent = c;
-          centroSel.appendChild(o);
-        });
-      })
-      .withFailureHandler(() => {
-        document.getElementById('centro').innerHTML = '<option value="">— Error al cargar —</option>';
-      })
-      .getCentrosNovios();
-  } else {
-    document.getElementById('centro').innerHTML = '<option value="">— Sin conexión (dev) —</option>';
+window.addEventListener('DOMContentLoaded', async () => {
+  const centroSel = document.getElementById('centro');
+  try {
+    const res = await fetch(APPS_SCRIPT_URL + '?action=centros', { redirect: 'follow' });
+    const data = await res.json();
+    centroSel.innerHTML = '<option value="">— Selecciona un centro —</option>';
+    (data.centros || []).forEach(c => {
+      const o = document.createElement('option');
+      o.value = c; o.textContent = c;
+      centroSel.appendChild(o);
+    });
+  } catch (err) {
+    centroSel.innerHTML = '<option value="">— Error al cargar —</option>';
   }
 });
 
@@ -439,7 +440,7 @@ function validate() {
 }
 
 // ── Submit ────────────────────────────────────────────────────────
-function submitForm() {
+async function submitForm() {
   if (!validate()) {
     window.scrollTo({top:0,behavior:'smooth'});
     alert('Por favor completa todos los campos obligatorios (marcados con *).');
@@ -472,16 +473,21 @@ function submitForm() {
     mejoras:          gv('mejoras'),
   };
 
-  google.script.run
-    .withSuccessHandler(() => {
-      document.getElementById('modal').classList.add('active');
-      setTimeout(() => location.reload(), 4000);
-    })
-    .withFailureHandler(err => {
-      btn.disabled=false; btn.textContent='Enviar Evaluación';
-      alert('Error al enviar: ' + err.message);
-    })
-    .registrarRespuestaNovios(data);
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'registrar', data: data }),
+      redirect: 'follow'
+    });
+    const json = await res.json();
+    if (!json.ok) throw new Error(json.mensaje || json.error || 'Error desconocido');
+    document.getElementById('modal').classList.add('active');
+    setTimeout(() => location.reload(), 4000);
+  } catch (err) {
+    btn.disabled = false; btn.textContent = 'Enviar Evaluación';
+    alert('Error al enviar: ' + (err && err.message ? err.message : err));
+  }
 }
 </script>
 </body>
