@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard · Experiencia Novios · Tinto</title>
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/drqkiohu8/image/upload/q_auto/f_auto/v1776383476/Icono_sin_fondo_wyxgzb.png">
+<link rel="apple-touch-icon" href="https://res.cloudinary.com/drqkiohu8/image/upload/q_auto/f_auto/v1776383476/Icono_sin_fondo_wyxgzb.png">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -116,6 +118,56 @@ tbody td.td-comment{text-align:left;white-space:normal;font-size:.75rem;color:#5
 /* Alert */
 .alert-box{background:#fef9e7;border:1.5px solid #f0c040;border-radius:8px;padding:12px 16px;font-size:.82rem;color:#7d6608;line-height:1.6;margin-bottom:16px}
 
+/* Tabs */
+.tabs{background:#fff;border-bottom:2px solid #e0e0e0;padding:0 28px;display:flex;gap:4px}
+.tab{padding:12px 20px;font-family:'Quicksand',sans-serif;font-size:.84rem;font-weight:700;color:#888;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;transition:all .15s;letter-spacing:.5px;text-transform:uppercase}
+.tab:hover{color:#333}
+.tab.active{color:#2a2a2a;border-bottom-color:#2a2a2a}
+.tab-count{display:inline-block;margin-left:6px;padding:1px 8px;background:#e0e0e0;color:#555;border-radius:10px;font-size:.7rem}
+.tab.active .tab-count{background:#2a2a2a;color:#fff}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* Clickable row */
+tbody tr.clickable{cursor:pointer}
+tbody tr.clickable:hover{background:#f0f4ff!important}
+
+/* Detail modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:999;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
+.modal-overlay.active{display:flex}
+.modal-box{background:#fff;border-radius:14px;max-width:780px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,.45);overflow:hidden}
+.modal-hdr{background:#2a2a2a;color:#fff;padding:20px 28px;display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.modal-hdr h2{font-family:'Cinzel',serif;font-size:1.05rem;letter-spacing:1.5px;line-height:1.3}
+.modal-hdr .meta{font-size:.78rem;color:#bbb;margin-top:6px;display:flex;gap:12px;flex-wrap:wrap}
+.modal-close{background:rgba(255,255,255,.12);color:#fff;border:none;width:32px;height:32px;border-radius:50%;font-size:1.1rem;cursor:pointer;flex-shrink:0}
+.modal-close:hover{background:rgba(255,255,255,.25)}
+.modal-body{padding:22px 28px;max-height:calc(100vh - 160px);overflow-y:auto}
+.modal-section{margin-bottom:22px}
+.modal-section h3{font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:1.2px;text-transform:uppercase;color:#fff;padding:8px 14px;border-radius:6px;margin-bottom:10px}
+.modal-section.s-rc   h3{background:#34495e}
+.modal-section.s-dec  h3{background:#1a6b3a}
+.modal-section.s-food h3{background:#b7410e}
+.modal-section.s-bar  h3{background:#1a3a6b}
+.modal-section.s-imp  h3{background:#c0392b}
+.score-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
+.score-row{display:flex;justify-content:space-between;align-items:center;padding:7px 12px;background:#f7f7f7;border-radius:6px;font-size:.8rem}
+.score-row .sr-lbl{color:#444;font-weight:600}
+.score-row .sr-val{font-weight:700;font-size:.95rem}
+.modal-comment{background:#fafafa;border-left:3px solid #ccc;padding:10px 14px;border-radius:0 6px 6px 0;font-size:.82rem;color:#333;line-height:1.6;white-space:pre-wrap}
+.modal-comment.empty{color:#aaa;font-style:italic}
+.modal-section.s-rc   .modal-comment{border-left-color:#34495e}
+.modal-section.s-dec  .modal-comment{border-left-color:#1a6b3a}
+.modal-section.s-food .modal-comment{border-left-color:#b7410e}
+.modal-section.s-bar  .modal-comment{border-left-color:#1a3a6b}
+.modal-section.s-imp  .modal-comment{border-left-color:#c0392b}
+
+/* Mejoras tab */
+.mejoras-list{display:flex;flex-direction:column;gap:12px;max-width:780px;margin:0 auto}
+.mejora-card{background:#fff;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.08);padding:16px 20px;border-left:4px solid #c0392b}
+.mejora-card .mc-meta{font-size:.76rem;color:#888;margin-bottom:6px;display:flex;gap:10px;flex-wrap:wrap}
+.mejora-card .mc-meta strong{color:#2a2a2a}
+.mejora-card .mc-text{font-size:.9rem;color:#333;line-height:1.65;white-space:pre-wrap}
+
 /* Responsive canvas */
 canvas{width:100%!important}
 </style>
@@ -161,11 +213,28 @@ canvas{width:100%!important}
   <div id="active-filters" style="display:flex;gap:6px;flex-wrap:wrap"></div>
 </div>
 
-<div class="main" id="main-content">
-  <div class="loader" id="loader">
-    <div class="spinner"></div>
-    <span>Cargando evaluaciones…</span>
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" data-tab="dashboard" onclick="switchTab('dashboard')">Dashboard</button>
+  <button class="tab" data-tab="mejoras" onclick="switchTab('mejoras')">Sugerencias Q19 <span class="tab-count" id="tab-count-mejoras">0</span></button>
+</div>
+
+<div class="tab-panel active" id="panel-dashboard">
+  <div class="main" id="main-content">
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+      <span>Cargando evaluaciones…</span>
+    </div>
   </div>
+</div>
+
+<div class="tab-panel" id="panel-mejoras">
+  <div class="main" id="mejoras-content"></div>
+</div>
+
+<!-- MODAL DE DETALLE -->
+<div class="modal-overlay" id="detail-modal" onclick="if(event.target===this)closeDetail()">
+  <div class="modal-box" id="detail-box"></div>
 </div>
 
 <script>
@@ -495,7 +564,155 @@ function renderDashboard() {
     buildCentroBar(d);
     buildCentroPie(d);
   }, 60);
+
+  // Refresh del tab de mejoras con el mismo set filtrado
+  renderMejorasPanel(d);
 }
+
+// ═══════════════════════════════════════════════════════════
+//  TABS
+// ═══════════════════════════════════════════════════════════
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + name));
+}
+
+// ═══════════════════════════════════════════════════════════
+//  SUGERENCIAS Q19 (tab "mejoras")
+// ═══════════════════════════════════════════════════════════
+function renderMejorasPanel(d) {
+  const list = d.filter(r => r.mejoras && r.mejoras.trim());
+  document.getElementById('tab-count-mejoras').textContent = list.length;
+
+  const target = document.getElementById('mejoras-content');
+  if (!list.length) {
+    target.innerHTML = `
+      <p class="section-label">Sugerencias de Mejora · Q19</p>
+      <div class="empty"><div class="empty-icon">💬</div><p>No hay sugerencias escritas en el período seleccionado.</p></div>`;
+    return;
+  }
+  target.innerHTML = `
+    <p class="section-label">Sugerencias de Mejora · Q19 · ${list.length} respuesta${list.length!==1?'s':''}</p>
+    <div class="mejoras-list">${list.map((r, i) => {
+      const globalIdx = _filtered.indexOf(r);
+      return `
+      <div class="mejora-card" onclick="openDetail(${globalIdx})" style="cursor:pointer" title="Ver evaluación completa">
+        <div class="mc-meta">
+          <strong>${escapeHtml(r.novios || '—')}</strong>
+          <span>${escapeHtml(r.centro || '—')}</span>
+          <span>${(r.fecha || '').slice(0,10)}</span>
+        </div>
+        <div class="mc-text">${escapeHtml(r.mejoras)}</div>
+      </div>`;
+    }).join('')}</div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  MODAL DE DETALLE
+// ═══════════════════════════════════════════════════════════
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+const SCORE_LABELS = {
+  rc: [
+    ['rc_comunicacion', 'Comunicación planificación (Q2)'],
+    ['rc_respuestas',   'Respuestas rápidas (Q3)'],
+    ['rc_coordinacion', 'Coordinación detalles (Q4)'],
+    ['rc_flexibilidad', 'Flexibilidad servicios (Q5)'],
+    ['rc_cotizacion',   'Experiencia cotización (Q6)'],
+    ['rc_degustacion',  'Proceso degustación (Q7)'],
+  ],
+  dec: [
+    ['dec_calidad',      'Calidad decoración (Q9)'],
+    ['dec_capacidad',    'Escucha en decoración (Q10)'],
+    ['dec_cumplimiento', 'Cumplimiento decoración (Q11)'],
+    ['dec_flexibilidad', 'Flexibilidad decoración (Q12)'],
+    ['dec_planimetria',  'Planimetría (Q13)'],
+  ],
+  food: [['comida', 'Comida: cóctel → bajón (Q15)']],
+  bar:  [['barra',  'Servicio y Barra (Q17)']],
+};
+
+function scoreColorHex(v) {
+  if (v == null) return '#aaa';
+  if (v >= 6) return '#155724';
+  if (v >= 5) return '#856404';
+  return '#721c24';
+}
+
+function renderScoreGrid(row, keys) {
+  return `<div class="score-grid">${keys.map(([k, lbl]) => {
+    const v = row[k];
+    const txt = (typeof v === 'number') ? v.toFixed(0) : '—';
+    return `<div class="score-row"><span class="sr-lbl">${lbl}</span><span class="sr-val" style="color:${scoreColorHex(v)}">${txt}</span></div>`;
+  }).join('')}</div>`;
+}
+
+function renderCommentBlock(txt) {
+  const t = (txt || '').trim();
+  if (!t) return `<div class="modal-comment empty">— Sin comentario —</div>`;
+  return `<div class="modal-comment">${escapeHtml(t)}</div>`;
+}
+
+function openDetail(idx) {
+  const row = _filtered[idx];
+  if (!row) return;
+
+  const globalKeys = [...RC_KEYS, ...DEC_KEYS, ...FOOD_KEYS, ...BAR_KEYS];
+  const vals = globalKeys.map(k => typeof row[k] === 'number' ? row[k] : null).filter(v => v !== null);
+  const prom = vals.length ? (vals.reduce((s, v) => s + v, 0) / vals.length).toFixed(1) : '—';
+
+  const box = document.getElementById('detail-box');
+  box.innerHTML = `
+    <div class="modal-hdr">
+      <div>
+        <h2>${escapeHtml(row.novios || '—')}</h2>
+        <div class="meta">
+          <span>📍 ${escapeHtml(row.centro || '—')}</span>
+          <span>📅 ${(row.fecha || '').slice(0,10)}</span>
+          <span>🕒 ${escapeHtml(row.timestamp || '')}</span>
+          <span>⭐ Global: <strong>${prom}</strong> / 7</span>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeDetail()" title="Cerrar">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section s-rc">
+        <h3>Relación Comercial</h3>
+        ${renderScoreGrid(row, SCORE_LABELS.rc)}
+        ${renderCommentBlock(row.rc_comentario)}
+      </div>
+      <div class="modal-section s-dec">
+        <h3>Decoración</h3>
+        ${renderScoreGrid(row, SCORE_LABELS.dec)}
+        ${renderCommentBlock(row.dec_comentario)}
+      </div>
+      <div class="modal-section s-food">
+        <h3>Comida</h3>
+        ${renderScoreGrid(row, SCORE_LABELS.food)}
+        ${renderCommentBlock(row.comida_comentario)}
+      </div>
+      <div class="modal-section s-bar">
+        <h3>Servicio y Barra</h3>
+        ${renderScoreGrid(row, SCORE_LABELS.bar)}
+        ${renderCommentBlock(row.barra_comentario)}
+      </div>
+      <div class="modal-section s-imp">
+        <h3>Sugerencias de Mejora (Q19)</h3>
+        ${renderCommentBlock(row.mejoras)}
+      </div>
+    </div>`;
+  document.getElementById('detail-modal').classList.add('active');
+}
+
+function closeDetail() {
+  document.getElementById('detail-modal').classList.remove('active');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeDetail();
+});
 
 // ── Alert: low scores ────────────────────────────────────────
 function renderAlert(d) {
@@ -565,7 +782,8 @@ function renderTable(d) {
     const g = k => (typeof row[k]==='number'?row[k]:null);
     const allV = ALL_KEYS.map(k=>g(k)).filter(v=>v!==null);
     const prom = allV.length ? (allV.reduce((s,v)=>s+v,0)/allV.length).toFixed(1) : '—';
-    return `<tr>
+    const globalIdx = _filtered.indexOf(row);
+    return `<tr class="clickable" onclick="openDetail(${globalIdx})" title="Ver detalle completo">
       <td class="td-name">${row.novios||'—'}</td>
       <td>${row.centro||'—'}</td>
       <td>${(row.fecha||'').slice(0,10)}</td>

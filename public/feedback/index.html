@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Experiencia Tinto · Formulario Novios</title>
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/drqkiohu8/image/upload/q_auto/f_auto/v1776383476/Icono_sin_fondo_wyxgzb.png">
+<link rel="apple-touch-icon" href="https://res.cloudinary.com/drqkiohu8/image/upload/q_auto/f_auto/v1776383476/Icono_sin_fondo_wyxgzb.png">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -103,9 +105,9 @@
       <div class="err-hint">Campo requerido</div></div>
     <div class="field">
       <label>Centro de Eventos<span class="req">*</span></label>
-      <select id="centro" onchange="onCentroChange()">
-        <option value="">— Cargando centros… —</option>
-      </select>
+      <input type="text" id="centro" list="centros-list" autocomplete="off" placeholder="Escribe o selecciona…">
+      <datalist id="centros-list"></datalist>
+      <p style="font-size:.74rem;color:#888;margin-top:4px">Si el centro no está en la lista, puedes escribirlo libremente.</p>
       <div class="err-hint">Campo requerido</div>
     </div>
     <div class="field"><label>Fecha del Matrimonio<span class="req">*</span></label>
@@ -333,24 +335,24 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyb71s5hczVEASo
 
 // ── Aux: centros ─────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async () => {
-  const centroSel = document.getElementById('centro');
+  const dl = document.getElementById('centros-list');
+  const input = document.getElementById('centro');
+  input.addEventListener('input', () => {
+    input.closest('.field').classList.remove('has-error');
+  });
   try {
     const res = await fetch(APPS_SCRIPT_URL + '?action=centros', { redirect: 'follow' });
     const data = await res.json();
-    centroSel.innerHTML = '<option value="">— Selecciona un centro —</option>';
+    dl.innerHTML = '';
     (data.centros || []).forEach(c => {
       const o = document.createElement('option');
-      o.value = c; o.textContent = c;
-      centroSel.appendChild(o);
+      o.value = c;
+      dl.appendChild(o);
     });
   } catch (err) {
-    centroSel.innerHTML = '<option value="">— Error al cargar —</option>';
+    input.placeholder = 'No se pudo cargar la lista — puedes escribirlo';
   }
 });
-
-function onCentroChange() {
-  document.getElementById('centro').closest('.field').classList.remove('has-error');
-}
 
 // ── Rating buttons 1-7 ───────────────────────────────────────────
 const RATING_GROUPS = [
@@ -396,7 +398,7 @@ const gr = id => { const el=document.getElementById(id); return el&&el.dataset.s
 function validate() {
   let ok = true;
 
-  ['novios','fecha'].forEach(id => {
+  ['novios','centro','fecha'].forEach(id => {
     const el = document.getElementById(id);
     const field = el.closest('.field');
     if (!el.value.trim()) {
@@ -408,16 +410,6 @@ function validate() {
       field.querySelector('.err-hint').style.display='none';
     }
   });
-
-  const centro = document.getElementById('centro');
-  if (!centro.value) {
-    centro.closest('.field').classList.add('has-error');
-    centro.closest('.field').querySelector('.err-hint').style.display='block';
-    ok = false;
-  } else {
-    centro.closest('.field').classList.remove('has-error');
-    centro.closest('.field').querySelector('.err-hint').style.display='none';
-  }
 
   RATING_GROUPS.forEach(({id}) => {
     const el = document.getElementById(id);
