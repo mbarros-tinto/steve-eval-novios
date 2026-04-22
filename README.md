@@ -26,7 +26,7 @@ Equipo → evaluacion.tintobanqueteria.cl (Cloudflare Pages · public/evaluacion
 |---|---|
 | Script ID | `1mBa4pgYuRQoPyuVUVwF1kmX4-T3CAA7bNFiepP61awC62ccbpaqyUuvi` |
 | Sheet ID | `1VdcezrZOSO03X_1-Njl4Mrz4kdAcYZqZmuzDI4MXpHI` |
-| Deployment actual | `AKfycbzAiqCVrr96pQ21JiVaB1HOWQr76--7Vian-mgqyG_DlLp-ZjxVuF878bP6BEUSbmKm` |
+| Deployment actual | `AKfycbyb71s5hczVEASojmRZDcgd5tztHJ5c3_uda0Nb3iM7CnLjlsenFXfJz5V1fmZSQns` |
 | Dominio formulario | `feedback.tintobanqueteria.cl` |
 | Dominio dashboard | `evaluacion.tintobanqueteria.cl` |
 | Informe mensual | `enviarInformeMensual` (trigger el 1 de cada mes, envía PDF a socios + comercial) |
@@ -66,7 +66,7 @@ clasp pull -u tinto                 # trae cambios del editor
 # editar apps-script/* o public/*
 clasp push -u tinto                 # solo sube apps-script/ (rootDir en .clasp.json)
 clasp version "v2: descripcion" -u tinto
-clasp redeploy AKfycbzAiqCVrr96pQ21JiVaB1HOWQr76--7Vian-mgqyG_DlLp-ZjxVuF878bP6BEUSbmKm -V 2 -d "v2" -u tinto
+clasp redeploy AKfycbyb71s5hczVEASojmRZDcgd5tztHJ5c3_uda0Nb3iM7CnLjlsenFXfJz5V1fmZSQns -V 2 -d "v2" -u tinto
 ```
 
 Cloudflare Pages despliega automáticamente al hacer push a `main` (dos proyectos distintos apuntando a este repo con root directories `public/feedback` y `public/evaluacion`).

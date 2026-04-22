@@ -25,7 +25,7 @@ En el editor de Apps Script:
 ```bash
 clasp push -u tinto
 clasp version "v2: descripcion" -u tinto
-clasp redeploy AKfycbzAiqCVrr96pQ21JiVaB1HOWQr76--7Vian-mgqyG_DlLp-ZjxVuF878bP6BEUSbmKm -V <N> -d "v2" -u tinto
+clasp redeploy AKfycbyb71s5hczVEASojmRZDcgd5tztHJ5c3_uda0Nb3iM7CnLjlsenFXfJz5V1fmZSQns -V <N> -d "v2" -u tinto
 ```
 La URL de exec no cambia, así que el frontend no necesita tocarse.
 
