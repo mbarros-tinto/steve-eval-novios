@@ -6,92 +6,222 @@
 <title>Experiencia Tinto · Formulario Novios</title>
 <link rel="icon" type="image/png" href="https://res.cloudinary.com/drqkiohu8/image/upload/q_auto/f_auto/v1776383476/Icono_sin_fondo_wyxgzb.png">
 <link rel="apple-touch-icon" href="https://res.cloudinary.com/drqkiohu8/image/upload/q_auto/f_auto/v1776383476/Icono_sin_fondo_wyxgzb.png">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="https://res.cloudinary.com/drqkiohu8/image/upload/v1776365257/Javiera_y_Felipe-468_jxrjef.jpg">
 <style>
+  :root{
+    --gold:#c9a96e;
+    --gold-soft:#e4cfa3;
+    --ink:#1a1014;
+    --ink-soft:#2a1f24;
+    --bordo:#6b1f2a;
+    --bordo-light:#8a2a38;
+    --line:rgba(255,255,255,.14);
+    --glass:rgba(22,16,18,.78);
+    --glass-soft:rgba(255,255,255,.04);
+    --err:#e8716e;
+  }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Quicksand',sans-serif;background:#1e1e1e;color:#222;min-height:100vh;padding:0 0 80px}
+  html,body{min-height:100vh}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:#fff;padding-bottom:60px;
+    background:
+      linear-gradient(rgba(15,10,10,.65), rgba(15,10,10,.82)),
+      url('https://res.cloudinary.com/drqkiohu8/image/upload/v1776365257/Javiera_y_Felipe-468_jxrjef.jpg') center/cover no-repeat fixed;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(ellipse at top, transparent 0%, rgba(0,0,0,.45) 100%);
+  }
 
-  .page-header{background:#2a2a2a;color:#fff;text-align:center;padding:32px 24px 28px;border-bottom:3px solid #555;position:relative;overflow:hidden}
-  .page-header::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,transparent 60%)}
-  .page-header .logo{height:78px;width:auto;margin-bottom:14px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.35));position:relative;z-index:1}
-  .page-header h1{font-family:'Cinzel',serif;font-size:1.45rem;letter-spacing:3px;text-transform:uppercase;color:#f0f0f0}
-  .page-header .sub{margin-top:8px;font-size:.83rem;color:#aaa;letter-spacing:1px}
-  .page-header .intro{margin-top:14px;font-size:.84rem;color:#ccc;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.7}
+  /* ── Header ─────────────────────────────────────────── */
+  .page-header{
+    position:relative;z-index:1;text-align:center;
+    padding:44px 24px 32px;
+    background:linear-gradient(180deg, rgba(201,169,110,.10), transparent 70%);
+    border-bottom:1px solid var(--line);
+  }
+  .page-header .logo{height:82px;width:auto;filter:drop-shadow(0 4px 14px rgba(0,0,0,.5));margin-bottom:18px}
+  .page-header h1{
+    font-family:'Cormorant Garamond',serif;font-weight:600;
+    font-size:2rem;line-height:1.15;letter-spacing:.5px;margin-bottom:6px;
+  }
+  .page-header h1 .accent{color:var(--gold);font-style:italic}
+  .page-header .sub{
+    font-size:.78rem;color:var(--gold-soft);
+    letter-spacing:3px;text-transform:uppercase;margin-bottom:18px;opacity:.85;
+  }
+  .divider-orn{display:flex;align-items:center;justify-content:center;gap:12px;max-width:280px;margin:0 auto 16px}
+  .divider-orn::before,.divider-orn::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold-soft),transparent);opacity:.6}
+  .divider-orn .dot{width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold)}
+  .page-header .intro{
+    max-width:620px;margin:0 auto;
+    font-size:.88rem;color:rgba(255,255,255,.82);line-height:1.7;
+  }
 
-  .container{max-width:800px;margin:0 auto;padding:0 16px}
+  /* ── Container ──────────────────────────────────────── */
+  .container{position:relative;z-index:1;max-width:780px;margin:0 auto;padding:28px 16px 0}
 
-  .section{background:#f5f5f5;border-radius:12px;margin-top:24px;overflow:hidden;box-shadow:0 3px 18px rgba(0,0,0,.25)}
-  .section-title{color:#fff;font-family:'Cinzel',serif;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;padding:14px 22px;display:flex;align-items:center;gap:10px}
-  .section-title .sec-num{background:rgba(255,255,255,.18);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
-  .s-id   .section-title{background:#2a2a2a}
-  .s-rc   .section-title{background:#34495e}
-  .s-dec  .section-title{background:#1a6b3a}
-  .s-food .section-title{background:#b7410e}
-  .s-bar  .section-title{background:#1a3a6b}
-  .s-fin  .section-title{background:#2a2a2a}
-  .section-body{padding:22px}
+  /* ── Section (glass card) ───────────────────────────── */
+  .section{
+    background:var(--glass);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+    border:1px solid var(--line);
+    border-radius:16px;
+    margin-top:22px;overflow:hidden;
+    box-shadow:0 30px 60px -24px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.03) inset;
+  }
+  .section-title{
+    display:flex;align-items:center;gap:12px;
+    padding:18px 24px;
+    background:linear-gradient(180deg, rgba(201,169,110,.08), transparent);
+    border-bottom:1px solid var(--line);
+    font-family:'Cormorant Garamond',serif;font-weight:600;
+    font-size:1.12rem;letter-spacing:.6px;color:#fff;
+  }
+  .section-title .sec-num{
+    display:flex;align-items:center;justify-content:center;
+    width:28px;height:28px;border-radius:50%;flex-shrink:0;
+    background:var(--gold);color:var(--ink);
+    font-family:'Inter',sans-serif;font-weight:700;font-size:.82rem;letter-spacing:0;
+  }
+  .section-body{padding:24px 26px 28px}
 
+  /* ── Fields ─────────────────────────────────────────── */
   .field{margin-bottom:20px}
-  .field label{display:block;font-weight:600;font-size:.88rem;color:#333;margin-bottom:6px}
-  .field label .req{color:#c0392b;margin-left:2px}
+  .field > label{
+    display:block;font-weight:500;font-size:.82rem;
+    color:rgba(255,255,255,.75);margin-bottom:8px;
+    letter-spacing:.3px;
+  }
+  .field label .req{color:var(--gold);margin-left:2px}
   .field input[type=text],.field input[type=date],.field textarea,.field select{
-    width:100%;padding:10px 14px;border:1.5px solid #ccc;border-radius:7px;
-    font-family:'Quicksand',sans-serif;font-size:.9rem;background:#fff;transition:border-color .2s,box-shadow .2s}
-  .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:#2a2a2a;box-shadow:0 0 0 3px rgba(42,42,42,.08)}
-  .field textarea{min-height:90px;resize:vertical}
-  .field select{cursor:pointer;appearance:auto}
-  .field select:disabled{background:#f0f0f0;color:#aaa;cursor:not-allowed}
+    width:100%;padding:11px 14px;
+    background:rgba(255,255,255,.05);
+    border:1px solid var(--line);border-radius:10px;
+    color:#fff;font-family:inherit;font-size:.92rem;
+    transition:all .2s;
+  }
+  .field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,.35)}
+  .field input:focus,.field textarea:focus,.field select:focus{
+    outline:none;border-color:var(--gold);
+    background:rgba(255,255,255,.08);
+    box-shadow:0 0 0 3px rgba(201,169,110,.15);
+  }
+  .field input[type=date]{color-scheme:dark}
+  .field textarea{min-height:100px;resize:vertical;line-height:1.55}
+  .field .hint{font-size:.74rem;color:rgba(255,255,255,.45);margin-top:6px;line-height:1.5}
 
-  /* Rating 1-7 */
-  .q-block{margin-bottom:22px}
-  .q-title{font-weight:700;font-size:.91rem;color:#222;margin-bottom:4px;line-height:1.45}
-  .q-sub{font-size:.79rem;color:#666;margin-bottom:9px;font-style:italic;line-height:1.4}
-  .rating-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-  .rating-lbl{font-size:.72rem;color:#999;white-space:nowrap}
-  .r-btns{display:flex;gap:4px;flex-wrap:wrap}
-  .r-btn{min-width:38px;height:38px;border:2px solid #ccc;border-radius:7px;background:#fff;
-    font-family:'Quicksand',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;
-    transition:all .12s;color:#555;padding:0 6px}
-  .r-btn:hover{border-color:#2a2a2a;background:#f0f0f0}
-  .r-btn.sel{color:#fff;border-color:transparent;transform:scale(1.06)}
-  .r-btn.sel-rc   {background:#34495e}
-  .r-btn.sel-dec  {background:#1a6b3a}
-  .r-btn.sel-food {background:#b7410e}
-  .r-btn.sel-bar  {background:#1a3a6b}
-  .r-btn.sel-dark {background:#2a2a2a}
+  /* ── Rating 1-7 ─────────────────────────────────────── */
+  .q-block{padding:18px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+  .q-block:last-of-type{border-bottom:none;padding-bottom:8px}
+  .q-title{
+    font-family:'Inter',sans-serif;font-weight:500;
+    font-size:.92rem;line-height:1.55;color:rgba(255,255,255,.92);
+    margin-bottom:14px;
+  }
+  .q-title .req{color:var(--gold)}
 
-  .scale-labels{display:flex;justify-content:space-between;font-size:.7rem;color:#aaa;margin-top:4px;padding:0 2px}
+  .rating-row{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+  .rating-lbl{
+    font-size:.72rem;color:rgba(255,255,255,.5);
+    letter-spacing:1px;text-transform:uppercase;white-space:nowrap;
+    flex:0 0 auto;min-width:74px;
+  }
+  .rating-lbl.left{text-align:right}
+  .rating-lbl.right{text-align:left}
+  .r-btns{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+  .r-btn{
+    width:42px;height:42px;
+    border:1px solid rgba(255,255,255,.18);border-radius:50%;
+    background:rgba(255,255,255,.04);
+    font-family:'Inter',sans-serif;font-weight:600;font-size:.88rem;
+    color:rgba(255,255,255,.75);cursor:pointer;
+    transition:all .15s ease;
+  }
+  .r-btn:hover{
+    border-color:var(--gold);color:#fff;
+    background:rgba(201,169,110,.12);
+    transform:translateY(-1px);
+  }
+  .r-btn.sel{
+    background:var(--gold);border-color:var(--gold);color:var(--ink);
+    box-shadow:0 0 0 4px rgba(201,169,110,.20), 0 6px 16px rgba(201,169,110,.35);
+    transform:scale(1.08);
+  }
 
-  .err-hint{color:#c0392b;font-size:.76rem;margin-top:4px;display:none}
-  .field.has-error input,.field.has-error textarea,.field.has-error select{border-color:#c0392b}
-  .q-block.has-error .r-btns{outline:2px solid #c0392b;border-radius:8px;padding:3px}
-  .q-block.has-error .err-hint{display:block}
+  /* Errors */
+  .err-hint{color:var(--err);font-size:.76rem;margin-top:6px;display:none}
+  .field.has-error input,.field.has-error textarea,.field.has-error select{border-color:var(--err)}
+  .q-block.has-error .r-btns{outline:2px solid var(--err);outline-offset:6px;border-radius:30px}
+  .q-block.has-error .err-hint{display:block;text-align:center;margin-top:10px}
 
-  .divider{border:none;border-top:1px solid #ddd;margin:4px 0 20px}
+  .divider{border:none;border-top:1px solid var(--line);margin:6px 0 22px}
 
-  .submit-wrap{text-align:center;margin-top:36px}
-  .submit-btn{background:#2a2a2a;color:#fff;border:none;padding:15px 54px;font-family:'Cinzel',serif;
-    font-size:.95rem;letter-spacing:2.5px;border-radius:9px;cursor:pointer;transition:background .2s,transform .1s;text-transform:uppercase}
-  .submit-btn:hover{background:#444;transform:translateY(-2px)}
-  .submit-btn:disabled{background:#aaa;cursor:not-allowed;transform:none}
+  /* ── Submit ─────────────────────────────────────────── */
+  .submit-wrap{text-align:center;margin-top:32px;padding:0 16px}
+  .submit-btn{
+    background:var(--gold);color:var(--ink);
+    border:none;padding:17px 64px;
+    font-family:'Cormorant Garamond',serif;font-weight:600;
+    font-size:1.05rem;letter-spacing:2px;text-transform:uppercase;
+    border-radius:50px;cursor:pointer;
+    transition:all .25s ease;
+    box-shadow:0 8px 28px rgba(201,169,110,.28), 0 0 0 1px rgba(255,255,255,.1) inset;
+  }
+  .submit-btn:hover{
+    background:var(--gold-soft);
+    transform:translateY(-2px);
+    box-shadow:0 14px 36px rgba(201,169,110,.4), 0 0 0 1px rgba(255,255,255,.15) inset;
+  }
+  .submit-btn:disabled{background:rgba(255,255,255,.2);color:rgba(255,255,255,.5);cursor:not-allowed;transform:none;box-shadow:none}
 
-  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);
-    backdrop-filter:blur(5px);z-index:999;align-items:center;justify-content:center}
+  /* ── Success modal ──────────────────────────────────── */
+  .modal-overlay{
+    display:none;position:fixed;inset:0;z-index:999;
+    background:rgba(0,0,0,.75);backdrop-filter:blur(8px);
+    align-items:center;justify-content:center;padding:20px;
+  }
   .modal-overlay.active{display:flex}
-  .modal-box{background:#fff;border-radius:16px;padding:42px 38px;text-align:center;
-    max-width:420px;width:92%;box-shadow:0 24px 64px rgba(0,0,0,.4)}
-  .modal-icon{font-size:3.2rem;margin-bottom:10px}
-  .modal-box h2{font-family:'Cinzel',serif;font-size:1.2rem;color:#2a2a2a;margin-bottom:8px}
-  .modal-box p{font-size:.88rem;color:#666;line-height:1.6}
-  .heart{color:#c0392b}
+  .modal-box{
+    background:linear-gradient(180deg, rgba(40,28,32,.96), rgba(22,16,18,.96));
+    border:1px solid var(--line);
+    border-radius:20px;padding:46px 38px;text-align:center;
+    max-width:440px;width:100%;
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
+  }
+  .modal-icon{font-size:3.2rem;margin-bottom:14px;filter:drop-shadow(0 4px 12px rgba(201,169,110,.4))}
+  .modal-box h2{
+    font-family:'Cormorant Garamond',serif;font-weight:600;
+    font-size:1.5rem;color:#fff;margin-bottom:10px;letter-spacing:.5px;
+  }
+  .modal-box h2 .accent{color:var(--gold);font-style:italic}
+  .modal-box p{font-size:.9rem;color:rgba(255,255,255,.75);line-height:1.65}
+
+  /* ── Responsive ─────────────────────────────────────── */
+  @media(max-width:560px){
+    .page-header{padding:32px 20px 24px}
+    .page-header h1{font-size:1.6rem}
+    .page-header .intro{font-size:.82rem}
+    .section-body{padding:20px 18px 24px}
+    .rating-lbl{display:none}
+    .r-btn{width:38px;height:38px;font-size:.82rem}
+    .r-btns{gap:5px}
+  }
 </style>
 </head>
 <body>
 
 <div class="page-header">
   <img class="logo" src="https://res.cloudinary.com/drqkiohu8/image/upload/v1750254786/LogoanimadoTinto_blanco-ezgif.com-optimize_uf4ruz.gif" alt="Tinto Banquetería">
-  <p class="sub">Formulario de Satisfacción · Novios</p>
-  <p class="intro">El siguiente formulario busca evaluar si el servicio entregado por Tinto cumplió con las expectativas y obtener feedback con el fin de ir constantemente mejorando. ¡Les agradecemos por darse el tiempo de responder y por haber optado por Tinto para la organización de su matrimonio!</p>
+  <h1>Experiencia <span class="accent">Novios</span></h1>
+  <p class="sub">Formulario de Satisfacción</p>
+  <div class="divider-orn"><span class="dot"></span></div>
+  <p class="intro">Queremos saber si nuestro servicio estuvo a la altura de su día y recoger su feedback para seguir mejorando. Gracias por darse el tiempo de responder y por haber elegido Tinto para su matrimonio.</p>
 </div>
 
 <div class="container">
@@ -107,7 +237,7 @@
       <label>Centro de Eventos<span class="req">*</span></label>
       <input type="text" id="centro" list="centros-list" autocomplete="off" placeholder="Escribe o selecciona…">
       <datalist id="centros-list"></datalist>
-      <p style="font-size:.74rem;color:#888;margin-top:4px">Si el centro no está en la lista, puedes escribirlo libremente.</p>
+      <p class="hint">Si el centro no está en la lista, puedes escribirlo libremente.</p>
       <div class="err-hint">Campo requerido</div>
     </div>
     <div class="field"><label>Fecha del Matrimonio<span class="req">*</span></label>
@@ -122,68 +252,62 @@
   <div class="section-body">
 
     <div class="q-block" id="qb_rc1">
-      <div class="q-title">2. ¿Cómo calificarían la comunicación de nuestro equipo en cuanto a la claridad durante el proceso de planificación? <span style="color:#c0392b">*</span></div>
+      <div class="q-title">2. ¿Cómo calificarían la comunicación de nuestro equipo en cuanto a la claridad durante el proceso de planificación? <span class="req">*</span></div>
       <div class="rating-row">
         <span class="rating-lbl">Muy malo</span>
         <div class="r-btns" id="rc_comunicacion" data-theme="rc"></div>
         <span class="rating-lbl">Sobresaliente</span>
       </div>
-      <div class="scale-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
       <div class="err-hint">Selecciona una respuesta</div>
     </div>
 
     <div class="q-block" id="qb_rc2">
-      <div class="q-title">3. ¿Recibieron respuestas rápidas y completas a todas sus preguntas y solicitudes? <span style="color:#c0392b">*</span></div>
+      <div class="q-title">3. ¿Recibieron respuestas rápidas y completas a todas sus preguntas y solicitudes? <span class="req">*</span></div>
       <div class="rating-row">
         <span class="rating-lbl">Para nada</span>
         <div class="r-btns" id="rc_respuestas" data-theme="rc"></div>
         <span class="rating-lbl">Sobresaliente</span>
       </div>
-      <div class="scale-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
       <div class="err-hint">Selecciona una respuesta</div>
     </div>
 
     <div class="q-block" id="qb_rc3">
-      <div class="q-title">4. ¿Cómo fue el proceso de coordinación de detalles específicos (horarios, proveedores, servicios adicionales, etc.) con nuestro equipo? <span style="color:#c0392b">*</span></div>
+      <div class="q-title">4. ¿Cómo fue el proceso de coordinación de detalles específicos (horarios, proveedores, servicios adicionales, etc.) con nuestro equipo? <span class="req">*</span></div>
       <div class="rating-row">
         <span class="rating-lbl">Muy malo</span>
         <div class="r-btns" id="rc_coordinacion" data-theme="rc"></div>
         <span class="rating-lbl">Sobresaliente</span>
       </div>
-      <div class="scale-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
       <div class="err-hint">Selecciona una respuesta</div>
     </div>
 
     <div class="q-block" id="qb_rc4">
-      <div class="q-title">5. ¿Te sentiste satisfecho con la flexibilidad de nuestros servicios para adaptarse a sus solicitudes y cambios? <span style="color:#c0392b">*</span></div>
+      <div class="q-title">5. ¿Te sentiste satisfecho con la flexibilidad de nuestros servicios para adaptarse a sus solicitudes y cambios? <span class="req">*</span></div>
       <div class="rating-row">
         <span class="rating-lbl">Muy insatisfecho</span>
         <div class="r-btns" id="rc_flexibilidad" data-theme="rc"></div>
         <span class="rating-lbl">Muy satisfecho</span>
       </div>
-      <div class="scale-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
       <div class="err-hint">Selecciona una respuesta</div>
     </div>
 
     <div class="q-block" id="qb_rc5">
-      <div class="q-title">6. ¿Cómo fue su experiencia en relación a la cotización? (claridad en los costos, servicios adicionales, valor UF, etc.) <span style="color:#c0392b">*</span></div>
+      <div class="q-title">6. ¿Cómo fue su experiencia en relación a la cotización? (claridad en los costos, servicios adicionales, valor UF, etc.) <span class="req">*</span></div>
       <div class="rating-row">
         <span class="rating-lbl">Muy mala</span>
         <div class="r-btns" id="rc_cotizacion" data-theme="rc"></div>
         <span class="rating-lbl">Sobresaliente</span>
       </div>
-      <div class="scale-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
       <div class="err-hint">Selecciona una respuesta</div>
     </div>
 
     <div class="q-block" id="qb_rc6">
-      <div class="q-title">7. ¿Cómo evaluarían el proceso de agendar la degustación? (disponibilidad de fechas, coordinación y comunicación) <span style="color:#c0392b">*</span></div>
+      <div class="q-title">7. ¿Cómo evaluarían el proceso de agendar la degustación? (disponibilidad de fechas, coordinación y comunicación) <span class="req">*</span></div>
       <div class="rating-row">
         <span class="rating-lbl">Muy malo</span>
         <div class="r-btns" id="rc_degustacion" data-theme="rc"></div>
         <span class="rating-lbl">Sobresaliente</span>
       </div>
-      <div class="scale-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
       <div class="err-hint">Selecciona una respuesta</div>
     </div>
 
@@ -199,57 +323,52 @@
   <div class="section-body">
 
     <div class="q-block" id="qb_dec1">
-      <div class="q-title">9. ¿Qué tan satisfechos están con la calidad de la decoración en el matrimonio? <span style="color:#c0392b">*</span></div>
+      <div class="q-title">9. ¿Qué tan satisfechos están con la calidad de la decoración en el matrimonio? <span class="req">*</span></div>
       <div class="rating-row">
         <span class="rating-lbl">Muy insatisfecho</span>
         <div class="r-btns" id="dec_calidad" data-theme="dec"></div>
         <span class="rating-lbl">Muy satisfecho</span>
       </div>
-      <div class="scale-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
       <div class="err-hint">Selecciona una respuesta</div>
     </div>
 
     <div class="q-block" id="qb_dec2">
-      <div class="q-title">10. ¿Cómo evaluarías nuestra capacidad para escuchar y atender sus sugerencias e inquietudes relacionadas con la decoración? <span style="color:#c0392b">*</span></div>
+      <div class="q-title">10. ¿Cómo evaluarías nuestra capacidad para escuchar y atender sus sugerencias e inquietudes relacionadas con la decoración? <span class="req">*</span></div>
       <div class="rating-row">
         <span class="rating-lbl">Muy mala</span>
         <div class="r-btns" id="dec_capacidad" data-theme="dec"></div>
         <span class="rating-lbl">Sobresaliente</span>
       </div>
-      <div class="scale-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
       <div class="err-hint">Selecciona una respuesta</div>
     </div>
 
     <div class="q-block" id="qb_dec3">
-      <div class="q-title">11. ¿Qué tan satisfechos están con el cumplimiento de lo elegido en la reunión de decoración? <span style="color:#c0392b">*</span></div>
+      <div class="q-title">11. ¿Qué tan satisfechos están con el cumplimiento de lo elegido en la reunión de decoración? <span class="req">*</span></div>
       <div class="rating-row">
         <span class="rating-lbl">Para nada</span>
         <div class="r-btns" id="dec_cumplimiento" data-theme="dec"></div>
         <span class="rating-lbl">100% cumplido</span>
       </div>
-      <div class="scale-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
       <div class="err-hint">Selecciona una respuesta</div>
     </div>
 
     <div class="q-block" id="qb_dec4">
-      <div class="q-title">12. ¿Cómo calificarías nuestra flexibilidad para realizar cambios en la decoración según sus requerimientos? <span style="color:#c0392b">*</span></div>
+      <div class="q-title">12. ¿Cómo calificarías nuestra flexibilidad para realizar cambios en la decoración según sus requerimientos? <span class="req">*</span></div>
       <div class="rating-row">
         <span class="rating-lbl">Muy poca</span>
         <div class="r-btns" id="dec_flexibilidad" data-theme="dec"></div>
         <span class="rating-lbl">Sobresaliente</span>
       </div>
-      <div class="scale-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
       <div class="err-hint">Selecciona una respuesta</div>
     </div>
 
     <div class="q-block" id="qb_dec5">
-      <div class="q-title">13. ¿Cómo calificarías la claridad y eficacia en el proceso de creación y explicación de la planimetría? <span style="color:#c0392b">*</span></div>
+      <div class="q-title">13. ¿Cómo calificarías la claridad y eficacia en el proceso de creación y explicación de la planimetría? <span class="req">*</span></div>
       <div class="rating-row">
         <span class="rating-lbl">Muy mala</span>
         <div class="r-btns" id="dec_planimetria" data-theme="dec"></div>
         <span class="rating-lbl">Sobresaliente</span>
       </div>
-      <div class="scale-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
       <div class="err-hint">Selecciona una respuesta</div>
     </div>
 
@@ -265,13 +384,12 @@
   <div class="section-body">
 
     <div class="q-block" id="qb_food1">
-      <div class="q-title">15. Con respecto a la comida, ¿cumplimos tus expectativas con el cóctel, entrada, fondo y bajón? <span style="color:#c0392b">*</span></div>
+      <div class="q-title">15. Con respecto a la comida, ¿cumplimos tus expectativas con el cóctel, entrada, fondo y bajón? <span class="req">*</span></div>
       <div class="rating-row">
         <span class="rating-lbl">Para nada</span>
         <div class="r-btns" id="comida" data-theme="food"></div>
         <span class="rating-lbl">100%!</span>
       </div>
-      <div class="scale-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
       <div class="err-hint">Selecciona una respuesta</div>
     </div>
 
@@ -287,13 +405,12 @@
   <div class="section-body">
 
     <div class="q-block" id="qb_bar1">
-      <div class="q-title">17. Con respecto al servicio y a la barra, ¿te sentiste bien atendido durante el matrimonio? ¿Quedaste satisfecho con el servicio de barra? <span style="color:#c0392b">*</span></div>
+      <div class="q-title">17. Con respecto al servicio y a la barra, ¿te sentiste bien atendido durante el matrimonio? ¿Quedaste satisfecho con el servicio de barra? <span class="req">*</span></div>
       <div class="rating-row">
         <span class="rating-lbl">Para nada</span>
         <div class="r-btns" id="barra" data-theme="bar"></div>
         <span class="rating-lbl">100%!</span>
       </div>
-      <div class="scale-labels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
       <div class="err-hint">Selecciona una respuesta</div>
     </div>
 
@@ -321,8 +438,9 @@
 <div class="modal-overlay" id="modal">
   <div class="modal-box">
     <div class="modal-icon">💍</div>
-    <h2>¡Muchas gracias! <span class="heart">♥</span></h2>
-    <p>Sus respuestas han sido registradas correctamente.<br>¡Fue un honor ser parte de su día!</p>
+    <h2>¡Muchas <span class="accent">gracias!</span></h2>
+    <div class="divider-orn"><span class="dot"></span></div>
+    <p>Sus respuestas quedaron registradas correctamente.<br>Fue un honor ser parte de su día.</p>
   </div>
 </div>
 
