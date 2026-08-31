@@ -14,22 +14,38 @@
   --accent:#5c7cfa; --border:#e0e0e0;
   --orange:#d97706; --orange-bg:#fff7ed;
 }
-body{font-family:'Quicksand',sans-serif;background:#1a1a2e;color:#222;min-height:100vh}
-.header{background:var(--dark);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #444}
-.header h1{font-family:'Cinzel',serif;font-size:1.1rem;color:#e8e8e8;letter-spacing:2px;text-transform:uppercase}
-.header a{font-size:.78rem;color:#aaa;text-decoration:none;background:#3a3a3a;padding:6px 14px;border-radius:6px;transition:background .2s}
-.header a:hover{background:#555;color:#fff}
-.selector-bar{background:#fff;border-bottom:1px solid var(--border);padding:14px 28px;display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+/* Shell unificado con la home del portal (evaluacion.): fondo #161412 y
+   header Cinzel dorado. Las tarjetas de evaluación mantienen su diseño. */
+body{font-family:'Quicksand',sans-serif;background:#161412;color:#222;min-height:100vh}
+.header{background:#211d1a;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #3a332c;flex-wrap:wrap;gap:10px}
+.header h1{font-family:'Cinzel',serif;font-size:1.05rem;color:#cbb682;letter-spacing:2px;text-transform:uppercase}
+.header a{font-size:.78rem;color:#cbb682;text-decoration:none;background:#2a2521;border:1px solid #3a332c;padding:6px 14px;border-radius:6px;transition:all .2s}
+.header a:hover{border-color:#cbb682}
+.selector-bar{background:#211d1a;border-bottom:1px solid #3a332c;padding:14px 28px;display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
 .selector-group{display:flex;flex-direction:column;gap:4px}
-.selector-group label{font-weight:700;font-size:.78rem;color:#666;text-transform:uppercase;letter-spacing:.5px}
-.selector-bar select{padding:9px 14px;border:2px solid var(--border);border-radius:8px;font-family:'Quicksand',sans-serif;font-size:.9rem;color:var(--dark);background:#fafafa;cursor:pointer;min-width:280px;transition:border-color .2s}
-.selector-bar select:focus{outline:none;border-color:var(--dark)}
-.selector-bar select:disabled{background:#f0f0f0;color:#aaa;cursor:not-allowed}
-.selector-bar input[type=date]{padding:9px 14px;border:2px solid var(--border);border-radius:8px;font-family:'Quicksand',sans-serif;font-size:.9rem;color:var(--dark);background:#fafafa;cursor:pointer;transition:border-color .2s}
-.selector-bar input[type=date]:focus{outline:none;border-color:var(--dark)}
-.selector-sep{color:#ccc;font-size:1.2rem;padding-bottom:4px;align-self:center}
-.btn-refresh{padding:9px 18px;border:2px solid var(--dark);border-radius:8px;background:var(--dark);color:#fff;font-family:'Quicksand',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;white-space:nowrap;align-self:flex-end}
-.btn-refresh:hover{background:#444}
+.selector-group label{font-weight:700;font-size:.75rem;color:#9a8d7a;text-transform:uppercase;letter-spacing:.5px}
+.selector-bar select{padding:9px 14px;border:1px solid #3a332c;border-radius:8px;font-family:'Quicksand',sans-serif;font-size:.9rem;color:#e8ded0;background:#161412;cursor:pointer;min-width:280px;transition:border-color .2s}
+.selector-bar select:focus{outline:none;border-color:#cbb682}
+.selector-bar select:disabled{opacity:.5;cursor:not-allowed}
+.selector-bar input[type=date]{padding:9px 14px;border:1px solid #3a332c;border-radius:8px;font-family:'Quicksand',sans-serif;font-size:.9rem;color:#e8ded0;background:#161412;cursor:pointer;transition:border-color .2s;color-scheme:dark}
+.selector-bar input[type=date]:focus{outline:none;border-color:#cbb682}
+.selector-sep{color:#3a332c;font-size:1.2rem;padding-bottom:4px;align-self:center}
+.btn-refresh{padding:9px 18px;border:1px solid #cbb682;border-radius:8px;background:#cbb682;color:#211d1a;font-family:'Quicksand',sans-serif;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;white-space:nowrap;align-self:flex-end}
+.btn-refresh:hover{opacity:.85}
+/* Vista de la semana (aterrizaje): un evento = una tarjeta clickeable */
+.semana-wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px}
+.semana-wrap h2{font-family:'Cinzel',serif;font-size:.95rem;letter-spacing:2px;text-transform:uppercase;color:#cbb682;margin-bottom:6px}
+.semana-wrap .rango{font-size:.8rem;color:#9a8d7a;margin-bottom:18px}
+.semana-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.semana-card{background:#211d1a;border:1px solid #3a332c;border-radius:12px;padding:18px;cursor:pointer;transition:.15s}
+.semana-card:hover{border-color:#cbb682;transform:translateY(-2px)}
+.semana-card .sc-fecha{font-size:.72rem;color:#9a8d7a;text-transform:uppercase;letter-spacing:1px}
+.semana-card .sc-centro{font-family:'Cinzel',serif;font-size:1rem;color:#cbb682;margin:6px 0 3px}
+.semana-card .sc-novios{font-size:.86rem;color:#e8ded0}
+.semana-vacia{color:#9a8d7a;font-size:.9rem;padding:14px 0}
+.volver-bar{max-width:1100px;margin:0 auto;padding:18px 20px 0;display:none}
+.btn-volver{background:#2a2521;color:#cbb682;border:1px solid #3a332c;border-radius:8px;padding:8px 16px;font-family:'Quicksand',sans-serif;font-weight:700;font-size:.83rem;cursor:pointer;transition:all .2s}
+.btn-volver:hover{border-color:#cbb682}
 .main{max-width:1100px;margin:0 auto;padding:24px 20px 60px}
 .event-banner{background:#fff;border-radius:12px;padding:20px 26px;margin-bottom:28px;box-shadow:0 2px 12px rgba(0,0,0,.1);border-left:5px solid var(--dark);display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start}
 .event-banner h2{font-family:'Cinzel',serif;font-size:1.3rem;color:var(--dark);width:100%}
@@ -102,10 +118,10 @@ body{font-family:'Quicksand',sans-serif;background:#1a1a2e;color:#222;min-height
 .foto-nope{color:#dc2626;font-size:.8rem;font-weight:600;white-space:nowrap}
 .alerta-empty{font-size:.88rem;color:#aaa;font-style:italic}
 
-.loading{text-align:center;padding:60px 20px;color:#888}
-.spinner{width:36px;height:36px;border:3px solid #ddd;border-top-color:var(--dark);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+.loading{text-align:center;padding:60px 20px;color:#9a8d7a}
+.spinner{width:36px;height:36px;border:3px solid #3a332c;border-top-color:#cbb682;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.empty-state{text-align:center;padding:60px 20px;color:#aaa;font-size:.95rem}
+.empty-state{text-align:center;padding:60px 20px;color:#9a8d7a;font-size:.95rem}
 /* ── MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:1000;padding:20px;overflow-y:auto}
 .modal-overlay.open{display:flex;align-items:flex-start;justify-content:center;padding-top:40px}
@@ -224,12 +240,12 @@ body{font-family:'Quicksand',sans-serif;background:#1a1a2e;color:#222;min-height
   <div id="fb-login-error"></div>
 </div>
 <div class="header">
-  <h1>Análisis de Eventos · Tinto Banquetería</h1>
-  <a href="?page=formulario">← Ir al Formulario</a>
+  <h1>Evaluación Supervisoras · Tinto</h1>
+  <a href="./">← Atrás</a>
 </div>
 <div class="selector-bar">
   <div class="selector-group">
-    <label for="fechaInput">Fecha del Evento</label>
+    <label for="fechaInput">Otra fecha</label>
     <input type="date" id="fechaInput" onchange="onFechaChange()">
   </div>
   <span class="selector-sep">›</span>
@@ -240,6 +256,10 @@ body{font-family:'Quicksand',sans-serif;background:#1a1a2e;color:#222;min-height
     </select>
   </div>
   <button class="btn-refresh" onclick="recargarEventos()">↻ Actualizar</button>
+</div>
+<div class="semana-wrap" id="semanaView" style="display:none"></div>
+<div class="volver-bar" id="volverBar">
+  <button class="btn-volver" onclick="volverASemana()">← Volver a la semana</button>
 </div>
 <div class="main" id="mainContent">
   <div class="loading"><div class="spinner"></div><p>Cargando eventos…</p></div>
@@ -297,10 +317,7 @@ function recargarEventos() {
       _allEventos = j.eventos || [];
       eventoSel.innerHTML = '<option value="">— Selecciona primero una fecha —</option>';
       eventoSel.disabled = true;
-      if (!_allEventos.length) {
-        document.getElementById('mainContent').innerHTML =
-          '<div class="empty-state">No hay eventos registrados aún.</div>';
-      }
+      renderSemana();
     })
     .catch(err => {
       eventoSel.innerHTML = '<option value="">Error al cargar</option>';
@@ -308,10 +325,64 @@ function recargarEventos() {
     });
 }
 
+// ── Vista de la semana (aterrizaje por defecto) ────────────────
+// Muestra los eventos evaluados desde el lunes de la semana pasada hasta hoy;
+// se aprieta el evento que se quiere revisar y "← Volver a la semana" regresa.
+let _semanaEvs = [];
+
+function _isoLocal(d) {
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function renderSemana() {
+  const hoy = new Date();
+  const lunes = new Date(hoy);
+  lunes.setDate(hoy.getDate() - ((hoy.getDay() + 6) % 7) - 7);  // lunes de la semana pasada
+  const dIso = _isoLocal(lunes), hIso = _isoLocal(hoy);
+  _semanaEvs = _allEventos.filter(ev => ev.fechaISO >= dIso && ev.fechaISO <= hIso);
+
+  const sem = document.getElementById('semanaView');
+  document.getElementById('mainContent').style.display = 'none';
+  document.getElementById('volverBar').style.display = 'none';
+  sem.style.display = 'block';
+
+  let html = `<h2>Eventos de la semana</h2>
+    <div class="rango">${dIso.split('-').reverse().join('/')} → ${hIso.split('-').reverse().join('/')} · aprieta el evento que quieres revisar</div>`;
+  if (!_semanaEvs.length) {
+    html += '<div class="semana-vacia">Sin eventos evaluados en la última semana. Usa el selector de fecha de arriba para buscar otro.</div>';
+  } else {
+    html += '<div class="semana-grid">' + _semanaEvs.map((ev, i) => `
+      <div class="semana-card" onclick="abrirDesdeSemana(${i})">
+        <div class="sc-fecha">${ev.fechaStr || ev.fechaISO}</div>
+        <div class="sc-centro">${esc(ev.centro || 'Sin centro')}</div>
+        <div class="sc-novios">${esc(ev.novios)}</div>
+      </div>`).join('') + '</div>';
+  }
+  sem.innerHTML = html;
+}
+
+function abrirDesdeSemana(i) {
+  const ev = _semanaEvs[i];
+  if (!ev) return;
+  document.getElementById('semanaView').style.display = 'none';
+  document.getElementById('mainContent').style.display = 'block';
+  document.getElementById('volverBar').style.display = 'block';
+  cargarEvento(ev.novios);
+}
+
+function volverASemana() {
+  document.getElementById('fechaInput').value = '';
+  renderSemana();
+}
+
 function onFechaChange() {
   const fechaVal  = document.getElementById('fechaInput').value;
   const eventoSel = document.getElementById('eventoSelect');
   const main      = document.getElementById('mainContent');
+  // Buscar por fecha sale de la vista semanal; "← Volver a la semana" regresa.
+  document.getElementById('semanaView').style.display = 'none';
+  document.getElementById('volverBar').style.display = 'block';
+  main.style.display = 'block';
   if (!fechaVal) {
     eventoSel.innerHTML = '<option value="">— Selecciona primero una fecha —</option>';
     eventoSel.disabled = true;
