@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Administración · Evaluación Tinto</title>
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/drqkiohu8/image/upload/q_auto/f_auto/v1776383476/Icono_sin_fondo_wyxgzb.png">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Quicksand',sans-serif;background:#161412;color:#e8ded0;min-height:100vh}
+a{color:#cbb682;text-decoration:none}
+.hdr{background:#211d1a;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #3a332c;flex-wrap:wrap}
+.hdr h1{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:2px;text-transform:uppercase;color:#cbb682}
+#topbarUser{font-size:.85rem;color:#9a8d7a}
+.wrap{max-width:1000px;margin:0 auto;padding:26px 20px 70px}
+h3.sec{font-family:'Cinzel',serif;font-size:.9rem;letter-spacing:2px;text-transform:uppercase;color:#cbb682;margin:32px 0 12px;border-bottom:1px solid #3a332c;padding-bottom:8px}
+table{width:100%;border-collapse:collapse;background:#211d1a;border-radius:10px;overflow:hidden;font-size:.85rem}
+th{background:#2a2521;color:#9a8d7a;font-size:.7rem;text-transform:uppercase;letter-spacing:1px;padding:8px 10px;text-align:left}
+td{padding:6px 10px;border-top:1px solid #2e2823;vertical-align:top}
+input,select,textarea{width:100%;background:#161412;border:1px solid #3a332c;border-radius:6px;color:#e8ded0;padding:6px 8px;font-family:inherit;font-size:.85rem}
+input[type=checkbox]{width:auto}
+input[type=number]{width:60px}
+button{background:#cbb682;color:#211d1a;border:none;border-radius:8px;padding:9px 18px;font-weight:700;font-family:inherit;cursor:pointer;font-size:.85rem}
+button.sec2{background:#2a2521;color:#cbb682;border:1px solid #3a332c}
+button:disabled{opacity:.5;cursor:default}
+.bar{display:flex;gap:10px;margin:12px 0 4px;align-items:center;flex-wrap:wrap}
+.msg{font-size:.82rem;color:#7fd79a}.msg.err{color:#e08585}
+.muted{color:#9a8d7a;font-size:.82rem}
+.tblwrap{overflow-x:auto}
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:.74rem;font-weight:600}
+.tag.ok{background:#1e3325;color:#7fd79a}.tag.err{background:#3a2224;color:#e08585}
+#fb-login{display:none;position:fixed;inset:0;background:rgba(20,18,16,.97);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:18px}
+#fb-login h2{font-family:'Cinzel',serif;color:#cbb682;letter-spacing:2px}
+#fb-login-error{display:none;color:#e08585;font-size:.9rem}
+</style>
+<script>
+  window.WORKER_URL = 'https://feedback-api.mbarros.workers.dev';
+  window.OAUTH_CLIENT_ID = '434512609733-r2rh6e8i4atmi6da6hnq5i8la9jcnhbg.apps.googleusercontent.com';
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="auth.js"></script>
+</head>
+<body>
+<div id="fb-login">
+  <h2>Administración · Evaluación</h2>
+  <div id="fb-login-boton"></div>
+  <div id="fb-login-error"></div>
+</div>
+
+<div class="hdr">
+  <h1><a href="index.html">← Evaluación</a> · Administración</h1>
+  <div id="topbarUser">—</div>
+</div>
+
+<div class="wrap">
+  <p class="muted">Todos pueden mirar; guardar exige rol admin. Los cambios rigen al instante para los formularios.</p>
+
+  <h3 class="sec">Preguntas — Evaluación de Socios</h3>
+  <div class="tblwrap"><table id="tSoc">
+    <thead><tr><th>Orden</th><th>Sección</th><th>Pregunta</th><th>Ayuda</th><th>Tipo</th><th>Activa</th><th></th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <div class="bar">
+    <button class="sec2" onclick="addSocio()">+ Agregar pregunta</button>
+    <button onclick="saveSocios(this)">Guardar preguntas</button>
+    <span class="msg" id="mSoc"></span>
+  </div>
+
+  <h3 class="sec">Platos y criterios (evaluación de cocina)</h3>
+  <div class="tblwrap"><table id="tPla">
+    <thead><tr><th>Plato</th><th>Criterio</th><th>Activo</th><th></th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <div class="bar">
+    <button class="sec2" onclick="addPlato()">+ Agregar criterio</button>
+    <button onclick="savePlatos(this)">Guardar platos</button>
+    <span class="msg" id="mPla"></span>
+  </div>
+
+  <h3 class="sec">Centros — formulario de novios</h3>
+  <div class="tblwrap"><table id="tCen">
+    <thead><tr><th>Centro</th><th>Activo</th><th></th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+  <div class="bar">
+    <button class="sec2" onclick="addCentro()">+ Agregar centro</button>
+    <button onclick="saveCentros(this)">Guardar centros</button>
+    <span class="msg" id="mCen"></span>
+  </div>
+
+  <h3 class="sec">Sincronización con Bonos (push a Control de Gestión)</h3>
+  <div class="tblwrap"><table id="tPush">
+    <thead><tr><th>Cuándo</th><th>Evento</th><th>Resultado</th><th>Detalle</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+</div>
+
+<script>
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fila = html => { const tr = document.createElement('tr'); tr.innerHTML = html; return tr; };
+const quitar = btn => btn.closest('tr').remove();
+
+// ── Socios ──
+function socRow(f = {}) {
+  return fila(`
+    <td><input type="number" class="s-orden" value="${f.orden ?? ''}"></td>
+    <td><input class="s-seccion" value="${esc(f.seccion || '')}"></td>
+    <td><input class="s-pregunta" value="${esc(f.pregunta || '')}"></td>
+    <td><input class="s-ayuda" value="${esc(f.ayuda || '')}"></td>
+    <td><select class="s-tipo">
+      <option value="nota"${f.tipo === 'nota' ? ' selected' : ''}>nota (0-7)</option>
+      <option value="bool"${f.tipo === 'bool' ? ' selected' : ''}>sí/no</option>
+      <option value="texto"${f.tipo === 'texto' ? ' selected' : ''}>texto</option>
+    </select></td>
+    <td style="text-align:center"><input type="checkbox" class="s-activa"${f.activa ? ' checked' : ''}></td>
+    <td><button class="sec2" onclick="quitar(this)">✕</button></td>`);
+}
+function addSocio() { document.querySelector('#tSoc tbody').appendChild(socRow({ activa: 1 })); }
+async function saveSocios(btn) {
+  const filas = [...document.querySelectorAll('#tSoc tbody tr')].map(tr => ({
+    orden: tr.querySelector('.s-orden').value, seccion: tr.querySelector('.s-seccion').value,
+    pregunta: tr.querySelector('.s-pregunta').value, ayuda: tr.querySelector('.s-ayuda').value,
+    tipo: tr.querySelector('.s-tipo').value, activa: tr.querySelector('.s-activa').checked,
+  }));
+  await guardar(btn, 'mSoc', 'admin.configSociosGuardar', { filas });
+}
+
+// ── Platos ──
+function plaRow(f = {}) {
+  return fila(`
+    <td><input class="p-plato" value="${esc(f.plato || '')}"></td>
+    <td><input class="p-criterio" value="${esc(f.criterio || '')}"></td>
+    <td style="text-align:center"><input type="checkbox" class="p-activo"${f.activo ? ' checked' : ''}></td>
+    <td><button class="sec2" onclick="quitar(this)">✕</button></td>`);
+}
+function addPlato() { document.querySelector('#tPla tbody').appendChild(plaRow({ activo: 1 })); }
+async function savePlatos(btn) {
+  const filas = [...document.querySelectorAll('#tPla tbody tr')].map(tr => ({
+    plato: tr.querySelector('.p-plato').value, criterio: tr.querySelector('.p-criterio').value,
+    activo: tr.querySelector('.p-activo').checked,
+  }));
+  await guardar(btn, 'mPla', 'admin.criteriosPlatosGuardar', { filas });
+}
+
+// ── Centros novios ──
+function cenRow(f = {}) {
+  return fila(`
+    <td><input class="c-centro" value="${esc(f.centro || '')}"></td>
+    <td style="text-align:center"><input type="checkbox" class="c-activo"${f.activo ? ' checked' : ''}></td>
+    <td><button class="sec2" onclick="quitar(this)">✕</button></td>`);
+}
+function addCentro() { document.querySelector('#tCen tbody').appendChild(cenRow({ activo: 1 })); }
+async function saveCentros(btn) {
+  const filas = [...document.querySelectorAll('#tCen tbody tr')].map(tr => ({
+    centro: tr.querySelector('.c-centro').value, activo: tr.querySelector('.c-activo').checked,
+  }));
+  await guardar(btn, 'mCen', 'admin.centrosNoviosGuardar', { filas });
+}
+
+async function guardar(btn, msgId, action, body) {
+  const m = document.getElementById(msgId);
+  btn.disabled = true; m.className = 'msg'; m.textContent = 'Guardando…';
+  try {
+    const j = await fbPost(action, body);
+    if (!j.ok) throw new Error(j.mensaje || j.error || 'Error');
+    m.textContent = '✓ Guardado';
+  } catch (e) {
+    m.className = 'msg err'; m.textContent = e.message;
+  } finally { btn.disabled = false; setTimeout(() => { m.textContent = ''; }, 5000); }
+}
+
+document.addEventListener('feedback:sesion-lista', async () => {
+  const [soc, pla, cen, push] = await Promise.all([
+    fbGet('admin.configSocios'), fbGet('admin.criteriosPlatos'),
+    fbGet('admin.centrosNovios'), fbGet('admin.pushCg'),
+  ]);
+  const tS = document.querySelector('#tSoc tbody');
+  (soc.filas || []).forEach(f => tS.appendChild(socRow(f)));
+  const tP = document.querySelector('#tPla tbody');
+  (pla.filas || []).forEach(f => tP.appendChild(plaRow(f)));
+  const tC = document.querySelector('#tCen tbody');
+  (cen.filas || []).forEach(f => tC.appendChild(cenRow(f)));
+  const tPu = document.querySelector('#tPush tbody');
+  tPu.innerHTML = (push.ultimos || []).map(u => `
+    <tr><td>${esc((u.timestamp || '').slice(0, 16).replace('T', ' '))}</td>
+        <td>${esc(u.eventoKey)}</td>
+        <td><span class="tag ${u.resultado === 'ok' ? 'ok' : 'err'}">${esc(u.resultado)}</span></td>
+        <td class="muted">${esc((u.detalle || '').slice(0, 90))}</td></tr>`).join('')
+    || '<tr><td colspan="4" class="muted">Sin registros aún</td></tr>';
+});
+</script>
+</body>
+</html>
