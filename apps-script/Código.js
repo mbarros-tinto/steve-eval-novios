@@ -1,4 +1,28 @@
 // ═══════════════════════════════════════════════════════════════════
+//  ⚰️ JUBILADO (2026-08-31) — migrado a feedback-api (Worker + D1).
+//  Formulario: https://feedback.tintobanqueteria.cl
+//  Dashboard:  https://evaluacion.tintobanqueteria.cl (con login Google)
+//  La hoja quedó CONGELADA como archivo histórico.
+// ═══════════════════════════════════════════════════════════════════
+function doGet(e) {
+  var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : '';
+  if (action) {
+    return ContentService.createTextOutput(JSON.stringify({
+      ok: false, error: 'JUBILADO',
+      mensaje: 'Este backend se migró a feedback-api. Formulario: feedback.tintobanqueteria.cl · Dashboard: evaluacion.tintobanqueteria.cl'
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+  return HtmlService.createHtmlOutput(
+    '<div style="font-family:sans-serif;max-width:480px;margin:80px auto;text-align:center">' +
+    '<h2>Este sistema se movió 🏠</h2>' +
+    '<p>Formulario de novios: <a href="https://feedback.tintobanqueteria.cl">feedback.tintobanqueteria.cl</a></p>' +
+    '<p>Dashboard: <a href="https://evaluacion.tintobanqueteria.cl">evaluacion.tintobanqueteria.cl</a></p></div>'
+  );
+}
+
+function doPost(e) { return doGet({ parameter: { action: 'x' } }); }
+
+// ═══════════════════════════════════════════════════════════════════
 //  Tinto Banquetería · Experiencia Novios — Backend (JSON API)
 //
 //  Frontends (Cloudflare Pages):
@@ -37,7 +61,7 @@ var SHEET_RESP = 'Respuestas Novios';
 var SHEET_AUX  = 'Aux';
 
 // ── Routing ──────────────────────────────────────────────────────────
-function doGet(e) {
+function doGet_jubilado_(e) {
   var action = (e && e.parameter && e.parameter.action) ? e.parameter.action : 'health';
   try {
     if (action === 'centros')    return _json({ ok: true, centros: _getCentros() });
@@ -55,7 +79,7 @@ function doGet(e) {
   }
 }
 
-function doPost(e) {
+function doPost_jubilado_(e) {
   try {
     var body = {};
     if (e && e.postData && e.postData.contents) {

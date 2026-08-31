@@ -21,6 +21,13 @@ var NOTA_MIN        = 6;  // umbral para marcar notas bajas
 //  TRIGGER MENSUAL (se ejecuta automáticamente el día 1)
 // ────────────────────────────────────────────────────────────────────
 function enviarInformeMensual() {
+  // ⚰️ JUBILADO (2026-08-31): el informe mensual lo manda el cron de
+  // feedback-api con link al portal. Este trigger queda como no-op hasta
+  // que se borre a mano en el editor.
+  Logger.log('enviarInformeMensual: JUBILADO — lo manda feedback-api');
+  return;
+}
+function enviarInformeMensual_jubilado_() {
   try {
     Logger.log('=== Iniciando envío de informe mensual ===');
 
